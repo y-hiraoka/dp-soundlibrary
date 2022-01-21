@@ -10,8 +10,14 @@ import {
   CheckboxGroup,
   Checkbox,
   SimpleGrid,
+  InputGroup,
+  InputLeftElement,
+  Icon,
+  InputRightElement,
+  IconButton,
 } from "@chakra-ui/react";
 import { VFC } from "react";
+import { MdClose, MdSearch } from "react-icons/md";
 import {
   categories,
   useActiveCategories,
@@ -39,11 +45,29 @@ export const FilteringDrawer: VFC<Props> = ({ onClose, isOpen }) => {
         <DrawerHeader>絞り込み</DrawerHeader>
         <DrawerBody w="full" maxW="container.sm" margin="auto" color="gray.300">
           <Stack spacing="3" py="4">
-            <Input
-              placeholder="検索ワード"
-              value={filteringText}
-              onChange={(e) => setFilteringText(e.target.value)}
-            />
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <Icon as={MdSearch} fontSize="xl" />
+              </InputLeftElement>
+              <Input
+                placeholder="検索"
+                aria-label="検索"
+                value={filteringText}
+                onChange={(e) => setFilteringText(e.target.value)}
+              />
+              <InputRightElement>
+                <IconButton
+                  borderRadius="full"
+                  variant="ghost"
+                  aria-label="検索クリア"
+                  size="sm"
+                  icon={<Icon as={MdClose} fontSize="xl" />}
+                  _hover={{}}
+                  _active={{}}
+                  onClick={() => setFilteringText("")}
+                />
+              </InputRightElement>
+            </InputGroup>
             <CheckboxGroup
               value={activeCategories}
               colorScheme="yellow"
