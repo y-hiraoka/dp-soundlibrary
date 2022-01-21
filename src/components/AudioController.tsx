@@ -138,7 +138,7 @@ export const AudioController: VFC = () => {
                     navigator.share({
                       title: "Pokemon DP ループプレイヤー",
                       text: "ポケットモンスター ダイヤモンド / パールの BGM を無限ループで楽しもう！",
-                      url: "https://dp-soundlibrary-loop.stin.ink",
+                      url: "https://dp-soundlibrary.stin.ink",
                     })
                   }
                 />
@@ -146,7 +146,7 @@ export const AudioController: VFC = () => {
                 <IconButton
                   as={TwitterShareLink}
                   text="ポケットモンスター ダイヤモンド / パールの BGM を無限ループで楽しもう！"
-                  url="https://dp-soundlibrary-loop.stin.ink"
+                  url="https://dp-soundlibrary.stin.ink"
                   hashtags={["ポケモンDP", "ポケモンBDSP"]}
                   aria-label="このWebサイトをTwitterでシェアする"
                   size="md"

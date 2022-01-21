@@ -63,7 +63,7 @@ const About: NextPage = () => {
               </Link>
             </ListItem>
             <ListItem>
-              <Link isExternal href="https://github.com/y-hiraoka/dp-soundlibrary-loop">
+              <Link isExternal href="https://github.com/y-hiraoka/dp-soundlibrary">
                 GitHub リポジトリ
                 <Icon as={MdOpenInNew} fontSize="sm" marginLeft="1" />
               </Link>

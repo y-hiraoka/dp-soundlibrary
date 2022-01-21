@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta
           property="og:image"
-          content="https://dp-soundlibrary-loop.stin.ink/pokeball-with-bg.png"
+          content="https://dp-soundlibrary.stin.ink/pokeball-with-bg.png"
         />
         <meta
           property="og:description"

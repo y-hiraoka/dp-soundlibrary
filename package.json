@@ -1,5 +1,5 @@
 {
-  "name": "dp-soundlibrary-loop",
+  "name": "dp-soundlibrary",
   "private": true,
   "scripts": {
     "dev": "next dev",
