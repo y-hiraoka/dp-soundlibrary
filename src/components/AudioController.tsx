@@ -41,6 +41,11 @@ export const AudioController: VFC = () => {
     window.navigator?.canShare !== undefined &&
     window.navigator?.canShare();
 
+  const sharingText =
+    nowPlaying === undefined
+      ? "『ポケットモンスター ダイヤモンド / パール』の BGM を無限ループで楽しもう！\n"
+      : `『ポケットモンスター ダイヤモンド / パール』の BGM 「${nowPlaying.title}」 を聴こう！\n`;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -137,7 +142,7 @@ export const AudioController: VFC = () => {
                   onClick={() =>
                     navigator.share({
                       title: "Pokemon DP ループプレイヤー",
-                      text: "ポケットモンスター ダイヤモンド / パールの BGM を無限ループで楽しもう！",
+                      text: sharingText,
                       url: "https://dp-soundlibrary.stin.ink",
                     })
                   }
@@ -145,7 +150,7 @@ export const AudioController: VFC = () => {
               ) : (
                 <IconButton
                   as={TwitterShareLink}
-                  text="ポケットモンスター ダイヤモンド / パールの BGM を無限ループで楽しもう！"
+                  text={sharingText}
                   url="https://dp-soundlibrary.stin.ink"
                   hashtags={["ポケモンDP", "ポケモンBDSP"]}
                   aria-label="このWebサイトをTwitterでシェアする"
