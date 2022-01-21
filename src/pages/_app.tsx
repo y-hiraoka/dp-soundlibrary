@@ -16,6 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AnalyticsScript />
       <Head>
         <title>ポケモンDP Sound Library ループプレイヤー</title>
+        <meta name="theme-color" content="#000000eb" />
         <meta
           name="description"
           content="『ポケットモンスターダイヤモンド・パール』の BGM をゲームプレイ中のように
