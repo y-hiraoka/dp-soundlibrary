@@ -14,6 +14,13 @@ https://dp-soundlibrary.stin.ink
 - Recoil
 - Chakra UI
 
+## 音声ファイルについて
+
+[Pokémon DP Sound Library](https://soundlibrary.pokemon.co.jp/download) の規約によると、音声ファイルの再配布は禁止になっています。
+GitHub の公開リポジトリは誰でもリソースのダウンロードが可能であり再配布に該当するため、音声ファイルは git コミット対象外にしています。
+
+ソースコードをクローンして Web サイトの動作をローカルで試す場合は [Pokémon DP Sound Library](https://soundlibrary.pokemon.co.jp/download) にて音声ファイルをダウンロードし、[こちらの JSON](https://github.com/y-hiraoka/dp-soundlibrary/blob/main/src/data/sounds.ts) に沿ってファイル名を変更して `public` ディレクトリに保存してください。
+
 ## contribute
 
 不具合の修正、デザインの修正、機能要望など気兼ねなく issue or pull-request 出していただいてかまいません。
