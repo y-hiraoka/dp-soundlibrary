@@ -21,6 +21,15 @@ GitHub の公開リポジトリは誰でもリソースのダウンロードが�
 
 ソースコードをクローンして Web サイトの動作をローカルで試す場合は [Pokémon DP Sound Library](https://soundlibrary.pokemon.co.jp/download) にて音声ファイルをダウンロードし、[こちらの JSON](https://github.com/y-hiraoka/dp-soundlibrary/blob/main/src/data/sounds.ts) に沿ってファイル名を変更して `public` ディレクトリに保存してください。
 
+```
+public/sounds/1.wav
+public/sounds/2.wav
+...
+public/sounds/149.wav
+```
+
+すべての音声ファイルを用意する必要はありませんが、ファイルが存在しない場合のエラーハンドリングはしてませんのでご了承ください。
+
 ## contribute
 
 不具合の修正、デザインの修正、機能要望など気兼ねなく issue or pull-request 出していただいてかまいません。
