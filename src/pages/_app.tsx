@@ -1,8 +1,9 @@
-import { Box, ChakraProvider, extendTheme, Theme } from "@chakra-ui/react";
+import { Box, ChakraProvider, extendTheme } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { RecoilRoot } from "recoil";
 import { AnalyticsScript, useGoogleAnalytics } from "../lib/analytics";
+import { FavoritesEffect } from "../state/favoritesState";
 
 const theme = extendTheme({
   shadows: { outline: "0 0 0 3px rgba(236, 201, 75, 0.6)" },
@@ -65,6 +66,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Box zIndex={1} position="relative">
             <Component {...pageProps} />
           </Box>
+          <FavoritesEffect />
         </ChakraProvider>
       </RecoilRoot>
     </>

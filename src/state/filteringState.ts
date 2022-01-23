@@ -22,7 +22,20 @@ const activeCategoriesAtom = atom<string[]>({
   default: [],
 });
 export const useActiveCategories = () => useRecoilValue(activeCategoriesAtom);
-export const useSetActiveCategories = () => useSetRecoilState(activeCategoriesAtom);
+export const useToggleActiveCategory = () =>
+  useRecoilCallback(
+    ({ set }) =>
+      (category: string) => {
+        set(activeCategoriesAtom, (prevState) => {
+          if (prevState.includes(category)) {
+            return prevState.filter((c) => c !== category);
+          } else {
+            return prevState.concat(category);
+          }
+        });
+      },
+    []
+  );
 
 const soundsFuse = new Fuse(sounds, { keys: ["title"] });
 
