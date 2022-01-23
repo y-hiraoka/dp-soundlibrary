@@ -1,30 +1,14 @@
-import {
-  Input,
-  Stack,
-  InputGroup,
-  InputLeftElement,
-  Icon,
-  InputRightElement,
-  IconButton,
-  Flex,
-  Button,
-  Text,
-} from "@chakra-ui/react";
+import { Stack, Flex, Button, Text } from "@chakra-ui/react";
 import { VFC } from "react";
-import { MdClose, MdSearch } from "react-icons/md";
 import {
   categories,
   useActiveCategories,
   useFilteredSoundsCount,
-  useFilteringText,
-  useSetFilteringText,
   useSoundsAreFiltered,
   useToggleActiveCategory,
 } from "../state/filteringState";
 
 export const Filtering: VFC = () => {
-  const filteringText = useFilteringText();
-  const setFilteringText = useSetFilteringText();
   const activeCategories = useActiveCategories();
   const toggleActiveCategory = useToggleActiveCategory();
   const soundsAreFiltered = useSoundsAreFiltered();
@@ -32,29 +16,6 @@ export const Filtering: VFC = () => {
 
   return (
     <Stack spacing="4" py="4" color="white">
-      <InputGroup>
-        <InputLeftElement pointerEvents="none">
-          <Icon as={MdSearch} fontSize="xl" />
-        </InputLeftElement>
-        <Input
-          placeholder="フィルタリング"
-          aria-label="フィルタリング"
-          value={filteringText}
-          onChange={(e) => setFilteringText(e.target.value)}
-        />
-        <InputRightElement>
-          <IconButton
-            borderRadius="full"
-            variant="ghost"
-            aria-label="フィルタリングクリア"
-            size="sm"
-            icon={<Icon as={MdClose} fontSize="xl" />}
-            _hover={{}}
-            _active={{}}
-            onClick={() => setFilteringText("")}
-          />
-        </InputRightElement>
-      </InputGroup>
       <Flex gap="2" wrap="wrap">
         {categories.map((category) => {
           const isActive = activeCategories.includes(category);
