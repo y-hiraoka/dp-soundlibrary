@@ -28,6 +28,8 @@ export const Filtering: VFC = () => {
               _hover={{ bgColor: "whiteAlpha.400" }}
               _active={{ bgColor: "whiteAlpha.600" }}
               opacity={isActive ? undefined : 0.5}
+              role="checkbox"
+              aria-checked={isActive}
               onClick={() => toggleActiveCategory(category)}
             >
               {category}

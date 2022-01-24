@@ -9,7 +9,9 @@ export const FavoriteButton: VFC<{ soundId: string }> = ({ soundId }) => {
 
   return (
     <IconButton
-      aria-label={isFavoriteSound ? "お気に入りを解除する" : "お気に入りに登録する"}
+      aria-label="お気に入り"
+      role="checkbox"
+      aria-checked={isFavoriteSound}
       icon={<Icon as={MdStar} fontSize="2xl" />}
       size="sm"
       bg="transparent"
