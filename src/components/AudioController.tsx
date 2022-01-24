@@ -18,6 +18,7 @@ import {
   useNowPlayingSound,
   usePrevSound,
 } from "../state/playerState";
+import { FavoriteButton } from "./FavoriteButton";
 
 const ShareButton = dynamic(() => import("./ShareButton"), { ssr: false });
 
@@ -47,8 +48,14 @@ export const AudioController: VFC = () => {
               templateColumns="1fr auto 1fr"
               marginTop="4"
               alignItems="center"
-              _before={{ content: "''", display: "block" }}
             >
+              {nowPlaying !== undefined ? (
+                <Box justifySelf="start">
+                  <FavoriteButton soundId={nowPlaying.id} />
+                </Box>
+              ) : (
+                <div />
+              )}
               <HStack spacing="4">
                 <IconButton
                   size="md"
@@ -97,7 +104,9 @@ export const AudioController: VFC = () => {
                   onClick={() => player.start(nextSound)}
                 />
               </HStack>
-              <ShareButton />
+              <Box justifySelf="end">
+                <ShareButton />
+              </Box>
             </Grid>
           </Flex>
         </Container>

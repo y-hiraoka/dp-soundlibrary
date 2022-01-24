@@ -1,9 +1,9 @@
 import { HStack, Icon, IconButton, Stack, Text, Divider, Center } from "@chakra-ui/react";
 import { memo, VFC } from "react";
-import { MdMusicNote, MdPlayArrow, MdStar } from "react-icons/md";
+import { MdMusicNote, MdPlayArrow } from "react-icons/md";
 import { SoundData } from "../data/sounds";
-import { useIsFavoriteSound, useToggleFavorite } from "../state/favoritesState";
 import { useAudioPlayer, useIsNowPlaying } from "../state/playerState";
+import { FavoriteButton } from "./FavoriteButton";
 
 type Props = {
   sound: SoundData;
@@ -12,8 +12,6 @@ type Props = {
 export const SoundItem: VFC<Props> = memo(({ sound }) => {
   const player = useAudioPlayer();
   const isNowPlaying = useIsNowPlaying(sound.id);
-  const toggleFavorite = useToggleFavorite();
-  const isFavoriteSound = useIsFavoriteSound(sound.id);
 
   const play = () => {
     player.start(sound);
@@ -60,16 +58,7 @@ export const SoundItem: VFC<Props> = memo(({ sound }) => {
         </Text>
       </Stack>
       <Center>
-        <IconButton
-          aria-label={isFavoriteSound ? "お気に入りを解除する" : "お気に入りに登録する"}
-          icon={<Icon as={MdStar} fontSize="2xl" />}
-          size="sm"
-          bg="transparent"
-          color={isFavoriteSound ? "yellow.300" : "whiteAlpha.500"}
-          _hover={{ bgColor: "whiteAlpha.300" }}
-          _active={{}}
-          onClick={() => toggleFavorite(sound.id)}
-        />
+        <FavoriteButton soundId={sound.id} />
       </Center>
     </HStack>
   );

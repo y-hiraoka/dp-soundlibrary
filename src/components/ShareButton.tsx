@@ -7,11 +7,7 @@ import { TwitterShareLink } from "./TwitterShareLink";
 const ShareButton: VFC = () => {
   const nowPlaying = useNowPlayingSound();
 
-  const canShare =
-    typeof window !== "undefined" &&
-    window.navigator?.share !== undefined &&
-    window.navigator?.canShare !== undefined &&
-    window.navigator?.canShare();
+  const canShare = typeof window !== "undefined" && window.navigator?.share !== undefined;
 
   const sharingText =
     nowPlaying === undefined
@@ -24,7 +20,6 @@ const ShareButton: VFC = () => {
       borderRadius="full"
       variant="ghost"
       color="white"
-      justifySelf="end"
       _hover={{ background: "whiteAlpha.400" }}
       _active={{ background: "whiteAlpha.500" }}
       aria-label="このWebサイトをシェアする"
@@ -48,7 +43,6 @@ const ShareButton: VFC = () => {
       borderRadius="full"
       variant="ghost"
       color="white"
-      justifySelf="end"
       _hover={{ background: "whiteAlpha.400" }}
       _active={{ background: "whiteAlpha.500" }}
       icon={<Icon as={MdShare} fontSize="xl" />}
