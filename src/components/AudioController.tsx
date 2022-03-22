@@ -6,11 +6,25 @@ import {
   HStack,
   Icon,
   IconButton,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { VFC } from "react";
-import { MdPause, MdPlayArrow, MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import { useCallback, useRef, VFC } from "react";
+import {
+  MdPause,
+  MdPlayArrow,
+  MdSkipNext,
+  MdSkipPrevious,
+  MdVolumeDown,
+  MdVolumeMute,
+  MdVolumeOff,
+  MdVolumeUp,
+} from "react-icons/md";
 import {
   useAudioPlayer,
   useAudioState,
@@ -23,6 +37,7 @@ import { FavoriteButton } from "./FavoriteButton";
 const ShareButton = dynamic(() => import("./ShareButton"), { ssr: false });
 
 export const AudioController: VFC = () => {
+  const shouldShowVolumeSlider = useBreakpointValue([false, true]); // スマホにボリューム調整要らんやろ
   const nowPlaying = useNowPlayingSound();
   const nextSound = useNextSound();
   const prevSound = usePrevSound();
@@ -49,13 +64,13 @@ export const AudioController: VFC = () => {
               marginTop="4"
               alignItems="center"
             >
-              {nowPlaying !== undefined ? (
-                <Box justifySelf="start">
-                  <FavoriteButton soundId={nowPlaying.id} />
-                </Box>
-              ) : (
-                <div />
-              )}
+              <Box justifySelf="start">
+                {shouldShowVolumeSlider ? (
+                  <VolumeSlider />
+                ) : (
+                  nowPlaying && <FavoriteButton soundId={nowPlaying.id} />
+                )}
+              </Box>
               <HStack spacing="4">
                 <IconButton
                   size="md"
@@ -104,13 +119,78 @@ export const AudioController: VFC = () => {
                   onClick={() => player.start(nextSound)}
                 />
               </HStack>
-              <Box justifySelf="end">
+              <HStack justifySelf="end">
+                {shouldShowVolumeSlider && nowPlaying !== undefined && (
+                  <FavoriteButton soundId={nowPlaying.id} />
+                )}
                 <ShareButton />
-              </Box>
+              </HStack>
             </Grid>
           </Flex>
         </Container>
       </Box>
     </>
+  );
+};
+
+const VolumeSlider: VFC = () => {
+  const audioState = useAudioState();
+  const player = useAudioPlayer();
+
+  const previousVolumeRef = useRef<number>();
+
+  const toggleMute = useCallback(() => {
+    if (previousVolumeRef.current === undefined) {
+      previousVolumeRef.current = audioState.volume;
+      player.setVolume(0);
+    } else {
+      player.setVolume(previousVolumeRef.current);
+      previousVolumeRef.current = undefined;
+    }
+  }, [audioState.volume, player]);
+
+  return (
+    <HStack spacing="1">
+      <IconButton
+        aria-label="show volume slider"
+        onClick={toggleMute}
+        variant="ghost"
+        borderRadius="full"
+        color="white"
+        size="sm"
+        _hover={{ background: "whiteAlpha.400" }}
+        _active={{ background: "whiteAlpha.500" }}
+        icon={
+          <Icon
+            as={
+              audioState.volume === 0
+                ? MdVolumeOff
+                : audioState.volume < 0.33
+                ? MdVolumeMute
+                : audioState.volume < 0.66
+                ? MdVolumeDown
+                : MdVolumeUp
+            }
+            fontSize="3xl"
+          />
+        }
+      />
+      <Slider
+        aria-label="ボリューム調整"
+        onChange={(value) => player.setVolume(value)}
+        focusThumbOnChange={false}
+        value={audioState.volume}
+        min={0}
+        max={1}
+        step={0.01}
+        w="24"
+        colorScheme="yellow"
+      >
+        <SliderTrack>
+          <SliderFilledTrack />
+        </SliderTrack>
+        <SliderThumb />
+      </Slider>
+    </HStack>
   );
 };
