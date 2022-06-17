@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import Script from "next/script";
-import { useEffect, VFC } from "react";
+import { useEffect, FC } from "react";
 
 export const GA_TRACKING_ID = "G-6B3JF8MB9J";
 
-export const AnalyticsScript: VFC = () => {
+export const AnalyticsScript: FC = () => {
   return (
     <>
       <Script

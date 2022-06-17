@@ -1,9 +1,9 @@
 import { Icon, IconButton } from "@chakra-ui/react";
-import { VFC } from "react";
+import { FC } from "react";
 import { MdStar } from "react-icons/md";
 import { useIsFavoriteSound, useToggleFavorite } from "../state/favoritesState";
 
-export const FavoriteButton: VFC<{ soundId: string }> = ({ soundId }) => {
+export const FavoriteButton: FC<{ soundId: string }> = ({ soundId }) => {
   const isFavoriteSound = useIsFavoriteSound(soundId);
   const toggleFavorite = useToggleFavorite();
 

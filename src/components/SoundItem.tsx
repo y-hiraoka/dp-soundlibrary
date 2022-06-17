@@ -1,5 +1,5 @@
 import { HStack, Icon, IconButton, Stack, Text, Divider, Center } from "@chakra-ui/react";
-import { memo, VFC } from "react";
+import { memo, FC } from "react";
 import { MdMusicNote, MdPlayArrow } from "react-icons/md";
 import { SoundData } from "../data/sounds";
 import { useAudioPlayer, useIsNowPlaying } from "../state/playerState";
@@ -9,7 +9,7 @@ type Props = {
   sound: SoundData;
 };
 
-export const SoundItem: VFC<Props> = memo(({ sound }) => {
+export const SoundItem: FC<Props> = memo(({ sound }) => {
   const player = useAudioPlayer();
   const isNowPlaying = useIsNowPlaying(sound.id);
 

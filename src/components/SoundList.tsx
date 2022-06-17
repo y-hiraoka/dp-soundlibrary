@@ -1,11 +1,11 @@
 import { Box, Stack } from "@chakra-ui/react";
-import { VFC } from "react";
+import { FC } from "react";
 import { SoundData } from "../data/sounds";
 import { useFavoriteSounds } from "../state/favoritesState";
 import { useFilteredSounds } from "../state/filteringState";
 import { SoundItem } from "./SoundItem";
 
-const SoundList: VFC<{ sounds: readonly SoundData[] }> = ({ sounds }) => {
+const SoundList: FC<{ sounds: readonly SoundData[] }> = ({ sounds }) => {
   return (
     <Stack as="ul" maxW="full" spacing="4">
       {sounds.map((sound) => (
@@ -17,12 +17,12 @@ const SoundList: VFC<{ sounds: readonly SoundData[] }> = ({ sounds }) => {
   );
 };
 
-export const FavoriteSoundList: VFC = () => {
+export const FavoriteSoundList: FC = () => {
   const favoriteSounds = useFavoriteSounds();
   return <SoundList sounds={favoriteSounds} />;
 };
 
-export const FilteredSoundList: VFC = () => {
+export const FilteredSoundList: FC = () => {
   const filteredSounds = useFilteredSounds();
   return <SoundList sounds={filteredSounds} />;
 };

@@ -1,5 +1,5 @@
 import { Stack, Flex, Button, Text } from "@chakra-ui/react";
-import { VFC } from "react";
+import { FC } from "react";
 import {
   categories,
   useActiveCategories,
@@ -8,7 +8,7 @@ import {
   useToggleActiveCategory,
 } from "../state/filteringState";
 
-export const Filtering: VFC = () => {
+export const Filtering: FC = () => {
   const activeCategories = useActiveCategories();
   const toggleActiveCategory = useToggleActiveCategory();
   const soundsAreFiltered = useSoundsAreFiltered();

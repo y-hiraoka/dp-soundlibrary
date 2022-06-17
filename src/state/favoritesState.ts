@@ -1,5 +1,5 @@
 import { useUpdateEffect } from "@chakra-ui/react";
-import { useEffect, useMemo, VFC } from "react";
+import { useEffect, useMemo, FC } from "react";
 import {
   atom,
   selectorFamily,
@@ -50,7 +50,7 @@ export const useIsFavoriteSound = (soundId: string) => {
   return useRecoilValue(isFavoriteSoundSelectorFamily(soundId));
 };
 
-export const FavoritesEffect: VFC = () => {
+export const FavoritesEffect: FC = () => {
   const [favorites, setFavorites] = useRecoilState(favoritesAtom);
 
   useEffect(() => {

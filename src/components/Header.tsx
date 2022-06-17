@@ -1,8 +1,8 @@
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
-import { VFC } from "react";
+import { FC } from "react";
 import NextLink from "next/link";
 
-export const Header: VFC = () => {
+export const Header: FC = () => {
   return (
     <Box bgColor="whiteAlpha.300" backdropFilter="blur(4px)">
       <Container maxW="container.sm">

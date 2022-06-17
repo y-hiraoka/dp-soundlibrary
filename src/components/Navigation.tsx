@@ -1,9 +1,9 @@
 import { Box, Container, HStack, Link } from "@chakra-ui/react";
-import { VFC } from "react";
+import { FC } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 
-export const Navigation: VFC = () => {
+export const Navigation: FC = () => {
   return (
     <Box bgColor="whiteAlpha.300" backdropFilter="blur(4px)">
       <Container maxW="container.sm">
@@ -16,7 +16,7 @@ export const Navigation: VFC = () => {
   );
 };
 
-const NavigationLink: VFC<{ href: string; children: string }> = ({ href, children }) => {
+const NavigationLink: FC<{ href: string; children: string }> = ({ href, children }) => {
   const { pathname } = useRouter();
   const isActive = href === pathname;
 

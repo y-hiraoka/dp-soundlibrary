@@ -1,10 +1,10 @@
 import { Icon, IconButton } from "@chakra-ui/react";
-import { VFC } from "react";
+import { FC } from "react";
 import { MdShare } from "react-icons/md";
 import { useNowPlayingSound } from "../state/playerState";
 import { TwitterShareLink } from "./TwitterShareLink";
 
-const ShareButton: VFC = () => {
+const ShareButton: FC = () => {
   const nowPlaying = useNowPlayingSound();
 
   const canShare = typeof window !== "undefined" && window.navigator?.share !== undefined;

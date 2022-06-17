@@ -14,7 +14,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { useCallback, useRef, VFC } from "react";
+import { FC, useCallback, useRef } from "react";
 import {
   MdPause,
   MdPlayArrow,
@@ -36,7 +36,7 @@ import { FavoriteButton } from "./FavoriteButton";
 
 const ShareButton = dynamic(() => import("./ShareButton"), { ssr: false });
 
-export const AudioController: VFC = () => {
+export const AudioController: FC = () => {
   const shouldShowVolumeSlider = useBreakpointValue([false, true]); // スマホにボリューム調整要らんやろ
   const nowPlaying = useNowPlayingSound();
   const nextSound = useNextSound();
@@ -133,7 +133,7 @@ export const AudioController: VFC = () => {
   );
 };
 
-const VolumeSlider: VFC = () => {
+const VolumeSlider: FC = () => {
   const audioState = useAudioState();
   const player = useAudioPlayer();
 
