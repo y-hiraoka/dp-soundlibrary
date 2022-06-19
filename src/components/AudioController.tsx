@@ -25,6 +25,7 @@ import {
   MdVolumeOff,
   MdVolumeUp,
 } from "react-icons/md";
+import { useKeybind } from "../lib/keybind";
 import {
   useAudioPlayer,
   useAudioState,
@@ -43,6 +44,30 @@ export const AudioController: FC = () => {
   const prevSound = usePrevSound();
   const player = useAudioPlayer();
   const audioState = useAudioState();
+  const togglePlay = useCallback(() => {
+    audioState.isPlaying
+      ? audioState.isPaused
+        ? player.resume()
+        : player.pause()
+      : player.start(nextSound);
+  }, [audioState.isPaused, audioState.isPlaying, nextSound, player]);
+  const playPrevSound = useCallback(() => player.start(prevSound), [player, prevSound]);
+  const playNextSound = useCallback(() => player.start(nextSound), [nextSound, player]);
+
+  useKeybind({
+    key: " ",
+    onKeyDown: togglePlay,
+  });
+  useKeybind({
+    key: "ArrowRight",
+    altKey: true,
+    onKeyDown: playNextSound,
+  });
+  useKeybind({
+    key: "ArrowLeft",
+    altKey: true,
+    onKeyDown: playPrevSound,
+  });
 
   return (
     <>
@@ -81,7 +106,7 @@ export const AudioController: FC = () => {
                   _active={{ background: "whiteAlpha.500" }}
                   aria-label="前の曲に戻る"
                   icon={<Icon fontSize="3xl" as={MdSkipPrevious} />}
-                  onClick={() => player.start(prevSound)}
+                  onClick={playPrevSound}
                 />
                 <IconButton
                   size="lg"
@@ -99,13 +124,7 @@ export const AudioController: FC = () => {
                       }
                     />
                   }
-                  onClick={() =>
-                    audioState.isPlaying
-                      ? audioState.isPaused
-                        ? player.resume()
-                        : player.pause()
-                      : player.start(nextSound)
-                  }
+                  onClick={togglePlay}
                 />
                 <IconButton
                   size="md"
@@ -116,7 +135,7 @@ export const AudioController: FC = () => {
                   _active={{ background: "whiteAlpha.500" }}
                   aria-label="次の曲に進む"
                   icon={<Icon fontSize="3xl" as={MdSkipNext} />}
-                  onClick={() => player.start(nextSound)}
+                  onClick={playNextSound}
                 />
               </HStack>
               <HStack justifySelf="end">
@@ -148,6 +167,17 @@ const VolumeSlider: FC = () => {
       previousVolumeRef.current = undefined;
     }
   }, [audioState.volume, player]);
+
+  useKeybind({
+    key: "ArrowUp",
+    altKey: true,
+    onKeyDown: () => player.setVolume(audioState.volume + 0.01),
+  });
+  useKeybind({
+    key: "ArrowDown",
+    altKey: true,
+    onKeyDown: () => player.setVolume(audioState.volume - 0.01),
+  });
 
   return (
     <HStack spacing="1">

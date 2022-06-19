@@ -116,6 +116,8 @@ export const useAudioPlayer = () => {
 
   const setVolume = useCallback(
     (volume: number) => {
+      volume = volume < 0 ? 0 : 1 < volume ? 1 : volume;
+
       if (gainNodeRef.current) {
         gainNodeRef.current.gain.value = volume;
       }
