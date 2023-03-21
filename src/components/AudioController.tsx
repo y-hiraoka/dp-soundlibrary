@@ -51,8 +51,14 @@ export const AudioController: FC = () => {
         : player.pause()
       : player.start(nextSound);
   }, [audioState.isPaused, audioState.isPlaying, nextSound, player]);
-  const playPrevSound = useCallback(() => player.start(prevSound), [player, prevSound]);
-  const playNextSound = useCallback(() => player.start(nextSound), [nextSound, player]);
+  const playPrevSound = useCallback(
+    () => player.start(prevSound),
+    [player, prevSound]
+  );
+  const playNextSound = useCallback(
+    () => player.start(nextSound),
+    [nextSound, player]
+  );
 
   useKeybind({
     key: " ",
