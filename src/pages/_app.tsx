@@ -32,12 +32,17 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="『ポケットモンスターダイヤモンド・パール』の BGM をゲームプレイ中のように
           ループして再生できる Web サイトです。作業用 BGM などに役立てることができます。"
         />
-        <meta property="og:title" content="ポケモンDP Sound Library ループプレイヤー" />
+        <meta
+          property="og:title"
+          content="ポケモンDP Sound Library ループプレイヤー"
+        />
         <meta property="og:type" content="website" />
         <meta
           property="og:site_name"
           content="ポケモンDP Sound Library ループプレイヤー"
         />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </Head>
       <RecoilRoot>
         <ChakraProvider theme={theme}>

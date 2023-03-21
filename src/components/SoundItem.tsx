@@ -1,4 +1,12 @@
-import { HStack, Icon, IconButton, Stack, Text, Divider, Center } from "@chakra-ui/react";
+import {
+  HStack,
+  Icon,
+  IconButton,
+  Stack,
+  Text,
+  Divider,
+  Center,
+} from "@chakra-ui/react";
 import { memo, FC } from "react";
 import { MdMusicNote, MdPlayArrow } from "react-icons/md";
 import { SoundData } from "../data/sounds";
@@ -7,9 +15,11 @@ import { FavoriteButton } from "./FavoriteButton";
 
 type Props = {
   sound: SoundData;
+  isOnline: boolean;
+  cached: boolean;
 };
 
-export const SoundItem: FC<Props> = memo(({ sound }) => {
+export const SoundItem: FC<Props> = memo(({ sound, isOnline, cached }) => {
   const player = useAudioPlayer();
   const isNowPlaying = useIsNowPlaying(sound.id);
 
@@ -20,6 +30,8 @@ export const SoundItem: FC<Props> = memo(({ sound }) => {
       event_label: sound.id,
     });
   };
+
+  const playButtonIsDisabled = !isOnline && !cached;
 
   return (
     <HStack
@@ -41,11 +53,16 @@ export const SoundItem: FC<Props> = memo(({ sound }) => {
           borderRadius="full"
           bgColor="transparent"
           border="1px solid white"
-          _hover={{ bgColor: "whiteAlpha.500" }}
-          _active={{ bgColor: "whiteAlpha.700" }}
+          _hover={{
+            bgColor: !playButtonIsDisabled ? "whiteAlpha.500" : "trasparent",
+          }}
+          _active={{
+            bgColor: !playButtonIsDisabled ? "whiteAlpha.700" : "transparent",
+          }}
           icon={<Icon as={MdPlayArrow} fontSize="xl" />}
           aria-label="再生スタート"
           onClick={play}
+          isDisabled={playButtonIsDisabled}
         />
       )}
       <Stack spacing="1" flex={1}>
