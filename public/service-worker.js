@@ -7,8 +7,6 @@
 // @ts-expect-error JavaScript 許さない
 const selfScope = self;
 
-selfScope.navigator.onLine;
-
 const CACHE_KEYS = {
   sounds: `sounds-v1`,
   resources: `resources-v1`,
@@ -70,6 +68,7 @@ selfScope.addEventListener("fetch", (event) => {
 
   const requestURL = new URL(event.request.url);
 
+  // 同一オリジンへのリクエストは全部キャッシュに突っ込む
   if (requestURL.origin === selfScope.location.origin) {
     event.respondWith(
       caches.open(CACHE_KEYS.resources).then(async (cache) => {
