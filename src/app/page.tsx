@@ -1,7 +1,8 @@
+import { redirect } from "next/navigation";
 import { FC } from "react";
 
 const Page: FC = () => {
-  return <h1 className="text-2xl font-extrabold">Hello Pokemons!</h1>;
+  redirect("/dp");
 };
 
 export default Page;

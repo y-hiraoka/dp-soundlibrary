@@ -60,7 +60,7 @@ export const AudioController: FC = () => {
     : MdPlayArrow;
 
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center rounded-md border border-white/10 bg-black/80 px-6 py-3">
+    <div className="grid grid-cols-[1fr_auto_1fr] items-center rounded-md border border-white/10 bg-black/80 px-6 py-3 backdrop-blur">
       <div>
         <VolumeSlider />
       </div>

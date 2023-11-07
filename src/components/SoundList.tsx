@@ -1,4 +1,5 @@
-import { Box, Stack } from "@chakra-ui/react";
+"use client";
+
 import { FC } from "react";
 import { SoundData } from "../data/sounds";
 import { useCachedSounds } from "../lib/use-cached-sounds";
@@ -12,17 +13,17 @@ const SoundList: FC<{ sounds: readonly SoundData[] }> = ({ sounds }) => {
   const cachedSounds = useCachedSounds();
 
   return (
-    <Stack as="ul" maxW="full" spacing="4">
+    <ul className="space-y-4">
       {sounds.map((sound) => (
-        <Box key={sound.id} as="li" listStyleType="none">
+        <li key={sound.id}>
           <SoundItem
             sound={sound}
             isOnline={isOnline}
             cached={cachedSounds.includes(sound.file)}
           />
-        </Box>
+        </li>
       ))}
-    </Stack>
+    </ul>
   );
 };
 
