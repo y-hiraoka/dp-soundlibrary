@@ -1,5 +1,5 @@
-import { useUpdateEffect } from "@chakra-ui/react";
 import { useEffect, useMemo, FC } from "react";
+import { useUpdateEffect } from "react-use";
 import {
   atom,
   selectorFamily,
@@ -32,7 +32,7 @@ export const useToggleFavorite = () => {
           }
         });
       },
-    []
+    [],
   );
 };
 
@@ -72,6 +72,6 @@ export const useFavoriteSounds = () => {
   const favorites = useRecoilValue(favoritesAtom);
   return useMemo(
     () => sounds.filter((sound) => favorites.includes(sound.id)),
-    [favorites]
+    [favorites],
   );
 };

@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*:focus-visible {
+  @apply outline outline-4 outline-yellow/60 outline-offset-2;
+}

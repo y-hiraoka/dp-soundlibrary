@@ -18,7 +18,6 @@
     "no-duplicate-imports": "warn",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "react/button-has-type": "error",
     "react/no-access-state-in-setstate": "error",
     "react/jsx-boolean-value": "warn",
     "react/jsx-equals-spacing": ["warn", "never"],
