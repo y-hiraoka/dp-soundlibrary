@@ -29,7 +29,14 @@ export const Navigation: FC = () => {
         <div className="mb-4 font-bold">その他</div>
         <div className="space-y-3 pl-4">
           <NavigationLink href="/about">サイトについて</NavigationLink>
-          <NavigationLink href="/favorites">GitHub</NavigationLink>
+          <a
+            href="https://github.com/y-hiraoka/dp-soundlibrary"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            GitHub
+          </a>
         </div>
       </div>
     </nav>
