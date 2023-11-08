@@ -18,6 +18,7 @@ import {
 } from "../state/playerState";
 import { FavoriteButton } from "./FavoriteButton";
 import { IconButton } from "./IconButton";
+import { NavigationDrawerButton } from "./NavigationDrawer";
 import { VolumeSlider } from "./VolumeSlider";
 
 const ShareButton = dynamic(() => import("./ShareButton"), { ssr: false });
@@ -60,8 +61,11 @@ export const AudioController: FC = () => {
     : MdPlayArrow;
 
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center rounded-md border border-white/10 bg-black/80 px-6 py-3 backdrop-blur">
-      <div>
+    <div className="grid h-audio-controller grid-cols-[1fr_auto_1fr] items-center rounded-md border border-white/10 bg-black/80 px-2 py-3 backdrop-blur md:px-6">
+      <div className="md:hidden">
+        <NavigationDrawerButton />
+      </div>
+      <div className="hidden md:block">
         <VolumeSlider />
       </div>
       <div className="flex flex-col items-center space-y-2">
@@ -93,7 +97,9 @@ export const AudioController: FC = () => {
         </div>
       </div>
       <div className="flex items-center space-x-2 justify-self-end">
-        {nowPlaying !== undefined && <FavoriteButton soundId={nowPlaying.id} />}
+        <div className="hidden md:block">
+          {nowPlaying !== undefined && <FavoriteButton soundId={nowPlaying.id} />}
+        </div>
         <ShareButton />
       </div>
     </div>

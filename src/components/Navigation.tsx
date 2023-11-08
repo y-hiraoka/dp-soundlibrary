@@ -9,7 +9,7 @@ import logo from "./pokeball-logo.svg";
 
 export const Navigation: FC = () => {
   return (
-    <nav className="w-fit space-y-6 rounded-md border-4 border-sidenav bg-white px-8 py-6">
+    <nav className="max-h-navigation w-fit space-y-6 overflow-y-auto rounded-md border-4 border-sidenav bg-white px-8 py-6">
       <Image src={logo} alt="ルートに移動する" />
       <div>
         <div className="mb-4 font-bold">ボックス</div>

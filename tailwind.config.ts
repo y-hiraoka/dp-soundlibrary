@@ -29,8 +29,16 @@ export default {
       borderColor: {
         sidenav: "#577198",
       },
+      height: {
+        "audio-controller": "90px",
+      },
       minHeight: {
         screen: "100dvh",
+      },
+      maxHeight: {
+        screen: "100dvh",
+        navigation:
+          "calc(theme(maxHeight.screen) - theme(height.audio-controller) - theme(spacing.4) * 3)",
       },
     },
   },
