@@ -2,6 +2,7 @@ import { Inter, Noto_Sans_JP } from "next/font/google";
 import { FC, ReactNode } from "react";
 import "./global.css";
 import { AudioController } from "../components/AudioController";
+import { Navigation } from "../components/Navigation";
 import { Providers } from "./providers";
 
 const inter = Inter({
@@ -21,10 +22,14 @@ const notosansjp = Noto_Sans_JP({
 const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <html lang="ja" className={`${inter.variable} ${notosansjp.variable}`}>
-      <body className="font-sans">
+      <body className="font-sans text-black">
         <Providers>
           <div className="grid min-h-screen grid-cols-[auto_1fr] grid-rows-[1fr_auto] gap-4 bg-black px-6 py-4">
-            <div>sidemenu</div>
+            <div>
+              <div className="sticky top-4">
+                <Navigation />
+              </div>
+            </div>
             <div className="min-w-0">{children}</div>
             <div className="sticky bottom-4 col-span-full">
               <AudioController />
