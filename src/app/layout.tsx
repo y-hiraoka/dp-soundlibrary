@@ -2,6 +2,7 @@ import { Inter, Noto_Sans_JP } from "next/font/google";
 import { FC, ReactNode } from "react";
 import "./global.css";
 import { AudioController } from "../components/AudioController";
+import { BackgroundGradient } from "../components/BackgroundGradient";
 import { Navigation } from "../components/Navigation";
 import { Providers } from "./providers";
 
@@ -24,9 +25,10 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
     <html lang="ja" className={`${inter.variable} ${notosansjp.variable}`}>
       <body className="bg-black font-sans text-black">
         <Providers>
+          <BackgroundGradient />
           <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 grid-rows-[1fr_auto] gap-4 p-3 md:grid-cols-[auto_1fr] md:px-6">
             <div className="hidden md:block">
-              <div className="sticky top-4">
+              <div className="sticky top-3">
                 <Navigation />
               </div>
             </div>

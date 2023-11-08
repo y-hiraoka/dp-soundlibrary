@@ -4,7 +4,7 @@ import { Filtering } from "../../components/Filtering";
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="space-y-4">
-      <div className="sticky top-3 md:top-4">
+      <div className="sticky top-3">
         <Filtering />
       </div>
       <div>{children}</div>
