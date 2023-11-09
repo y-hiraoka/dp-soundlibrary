@@ -19,4 +19,8 @@ export default FavoritePage;
 
 export const metadata: Metadata = {
   title: "お気に入り",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };

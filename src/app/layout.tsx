@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     card: "summary",
   },
   metadataBase:
-    process.env.VERCE_ENV === "production"
+    process.env.NODE_ENV === "production"
       ? new URL("https://pokemon-soundlibrary.stin.ink")
       : null,
 };
