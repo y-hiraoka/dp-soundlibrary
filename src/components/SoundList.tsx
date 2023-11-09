@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { SoundData } from "../data/sounds";
+import { SoundData } from "../data/sound-type";
 import { useCachedSounds } from "../lib/use-cached-sounds";
 import { useIsOnline } from "../lib/use-is-online";
 import { useFavoriteSounds } from "../state/favoritesState";

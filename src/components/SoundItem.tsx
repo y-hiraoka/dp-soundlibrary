@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { memo, FC } from "react";
 import { MdMusicNote, MdPlayArrow } from "react-icons/md";
-import { SoundData } from "../data/sounds";
+import { SoundData } from "../data/sound-type";
 import { useAudioPlayer, useIsNowPlaying } from "../state/playerState";
 import { FavoriteButton } from "./FavoriteButton";
 import { IconButton } from "./IconButton";

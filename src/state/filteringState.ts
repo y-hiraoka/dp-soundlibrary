@@ -1,3 +1,4 @@
+import Fuse from "fuse.js";
 import {
   atom,
   selector,
@@ -5,10 +6,9 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
-import Fuse from "fuse.js";
-import { sounds } from "../data/sounds";
+import { dp_sounds } from "../data/dp";
 
-export const categories = [...new Set(sounds.map((s) => s.category))];
+export const categories = [...new Set(dp_sounds.map((s) => s.category))];
 
 const filteringTextAtom = atom<string>({
   key: "filteringTextAtom",
@@ -34,10 +34,10 @@ export const useToggleActiveCategory = () =>
           }
         });
       },
-    []
+    [],
   );
 
-const soundsFuse = new Fuse(sounds, { keys: ["title"] });
+const soundsFuse = new Fuse(dp_sounds, { keys: ["title"] });
 
 const filteredSoundsSelector = selector({
   key: "filteredSoundsSelector",
@@ -47,9 +47,9 @@ const filteredSoundsSelector = selector({
 
     if (!filteringText) {
       if (activeCategories.length === 0) {
-        return sounds;
+        return dp_sounds;
       } else {
-        return sounds.filter((sound) => activeCategories.includes(sound.category));
+        return dp_sounds.filter((sound) => activeCategories.includes(sound.category));
       }
     } else {
       const searched = soundsFuse.search(filteringText).map((element) => element.item);
@@ -88,5 +88,5 @@ export const useResetFiltering = () =>
         reset(filteringTextAtom);
         reset(activeCategoriesAtom);
       },
-    []
+    [],
   );

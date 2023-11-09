@@ -7,7 +7,7 @@ import {
   useRecoilState,
   useRecoilValue,
 } from "recoil";
-import { sounds } from "../data/sounds";
+import { dp_sounds } from "../data/dp";
 
 const STORAGE_KEY = "__dp-soundlibrary-favorites-key";
 
@@ -71,7 +71,7 @@ export const FavoritesEffect: FC = () => {
 export const useFavoriteSounds = () => {
   const favorites = useRecoilValue(favoritesAtom);
   return useMemo(
-    () => sounds.filter((sound) => favorites.includes(sound.id)),
+    () => dp_sounds.filter((sound) => favorites.includes(sound.id)),
     [favorites],
   );
 };
