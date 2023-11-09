@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { Metadata, NextPage } from "next";
 
 const FavoritePage: NextPage = () => {
   return (
@@ -17,3 +17,7 @@ const FavoritePage: NextPage = () => {
 };
 
 export default FavoritePage;
+
+export const metadata: Metadata = {
+  title: "サイトについて",
+};

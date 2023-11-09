@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { Metadata, NextPage } from "next";
 import { FavoriteSoundList } from "../../components/SoundList";
 
 const FavoritePage: NextPage = () => {
@@ -16,3 +16,7 @@ const FavoritePage: NextPage = () => {
 };
 
 export default FavoritePage;
+
+export const metadata: Metadata = {
+  title: "お気に入り",
+};

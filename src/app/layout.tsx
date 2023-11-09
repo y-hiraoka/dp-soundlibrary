@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
 import { FC, ReactNode } from "react";
 import "./global.css";
@@ -44,3 +45,21 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 export default RootLayout;
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "ポケモン Sound Library ループプレイヤー",
+    template: "%s | ポケモン Sound Library ループプレイヤー",
+  },
+  description:
+    "『ポケットモンスターダイヤモンド・パール』の BGM をゲームプレイ中のようにループして再生できる Web サイトです。作業用 BGM などに役立てることができます。",
+  openGraph: {
+    type: "website",
+    title: "ポケモン Sound Library ループプレイヤー",
+    description:
+      "『ポケットモンスターダイヤモンド・パール』の BGM をゲームプレイ中のようにループして再生できる Web サイトです。作業用 BGM などに役立てることができます。",
+  },
+  twitter: {
+    card: "summary",
+  },
+};
