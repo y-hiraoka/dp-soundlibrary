@@ -62,4 +62,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
   },
+  metadataBase:
+    process.env.VERCE_ENV === "production"
+      ? new URL("https://pokemon-soundlibrary.stin.ink")
+      : null,
 };
