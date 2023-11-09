@@ -15,12 +15,12 @@ export const Navigation: FC = () => {
         <div className="mb-4 font-bold">ボックス</div>
         <div className="space-y-3 pl-4">
           <NavigationLink href="/rg">
-            <span className="font-bold text-red">赤</span>・
-            <span className="font-bold text-green">緑</span>
+            <span className="font-bold text-pokemon-red">赤</span>・
+            <span className="font-bold text-pokemon-green">緑</span>
           </NavigationLink>
           <NavigationLink href="/dp">
-            <span className="font-bold text-diamond">ダイヤモンド</span>・
-            <span className="font-bold text-pearl">パール</span>
+            <span className="font-bold text-pokemon-diamond">ダイヤモンド</span>・
+            <span className="font-bold text-pokemon-pearl">パール</span>
           </NavigationLink>
           <NavigationLink href="/favorites">お気に入り</NavigationLink>
         </div>

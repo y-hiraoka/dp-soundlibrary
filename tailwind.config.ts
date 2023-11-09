@@ -10,10 +10,12 @@ export default {
       white: "#ffffff",
       black: "#0a0a0a",
       yellow: "#FBE200",
-      red: "#F03C00",
-      green: "#00C800",
-      diamond: "#5A8CD2",
-      pearl: "#C85A96",
+      pokemon: {
+        red: "#F03C00",
+        green: "#00C800",
+        diamond: "#5A8CD2",
+        pearl: "#C85A96",
+      },
     },
     fontFamily: {
       sans: [
@@ -47,7 +49,7 @@ export default {
   plugins: [
     plugin(({ addUtilities, addBase }) => {
       addBase({
-        "@keyframes background-theming-pulse": {
+        "@keyframes background-gradient-pulse": {
           "0%": {
             opacity: "0",
           },
@@ -58,25 +60,25 @@ export default {
       });
 
       addUtilities({
-        ".background-theming-red": {
+        ".background-gradient-pokemon-red": {
           background:
-            "radial-gradient(circle at 75% 25%, theme(colors.red/35%), transparent 80%)",
-          animation: "background-theming-pulse 10s ease-in infinite alternate",
+            "radial-gradient(circle at 75% 25%, theme(colors.pokemon.red/35%), transparent 80%)",
+          animation: "background-gradient-pulse 10s ease-in infinite alternate",
         },
-        ".background-theming-green": {
+        ".background-gradient-pokemon-green": {
           background:
-            "radial-gradient(circle at 25% 75%, theme(colors.green/28%), transparent 80%)",
-          animation: "background-theming-pulse 10s ease-in infinite alternate-reverse",
+            "radial-gradient(circle at 25% 75%, theme(colors.pokemon.green/28%), transparent 80%)",
+          animation: "background-gradient-pulse 10s ease-in infinite alternate-reverse",
         },
-        ".background-theming-diamond": {
+        ".background-gradient-pokemon-diamond": {
           background:
-            "radial-gradient(circle at 75% 25%, theme(colors.diamond/40%), transparent)",
-          animation: "background-theming-pulse 10s ease-in infinite alternate",
+            "radial-gradient(circle at 75% 25%, theme(colors.pokemon.diamond/40%), transparent)",
+          animation: "background-gradient-pulse 10s ease-in infinite alternate",
         },
-        ".background-theming-pearl": {
+        ".background-gradient-pokemon-pearl": {
           background:
-            "radial-gradient(circle at 25% 75%, theme(colors.pearl/35%), transparent)",
-          animation: "background-theming-pulse 10s ease-in infinite alternate-reverse",
+            "radial-gradient(circle at 25% 75%, theme(colors.pokemon.pearl/35%), transparent)",
+          animation: "background-gradient-pulse 10s ease-in infinite alternate-reverse",
         },
       });
     }),

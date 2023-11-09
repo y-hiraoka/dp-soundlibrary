@@ -1,7 +1,6 @@
 "use client";
 
 import { Transition } from "@headlessui/react";
-import classNames from "classnames";
 import { FC } from "react";
 import { useNowPlayingSound } from "../state/playerState";
 
@@ -22,14 +21,14 @@ export const BackgroundGradient: FC = () => {
     >
       {nowPlaying?.id.startsWith("dp") && (
         <>
-          <div className={classNames("absolute inset-0 background-theming-diamond")} />
-          <div className={classNames("absolute inset-0 background-theming-pearl")} />
+          <div className={"absolute inset-0 background-gradient-pokemon-diamond"} />
+          <div className={"absolute inset-0 background-gradient-pokemon-pearl"} />
         </>
       )}
       {nowPlaying?.id.startsWith("rg") && (
         <>
-          <div className={classNames("absolute inset-0 background-theming-red")} />
-          <div className={classNames("absolute inset-0 background-theming-green")} />
+          <div className={"absolute inset-0 background-gradient-pokemon-red"} />
+          <div className={"absolute inset-0 background-gradient-pokemon-green"} />
         </>
       )}
     </Transition>
