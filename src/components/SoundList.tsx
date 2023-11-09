@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { SoundData } from "../data/sound-type";
+import { SoundData, SoundVersion } from "../data/sound-type";
 import { useCachedSounds } from "../lib/use-cached-sounds";
 import { useIsOnline } from "../lib/use-is-online";
 import { useFavoriteSounds } from "../state/favoritesState";
@@ -32,7 +32,7 @@ export const FavoriteSoundList: FC = () => {
   return <SoundList sounds={favoriteSounds} />;
 };
 
-export const FilteredSoundList: FC = () => {
-  const filteredSounds = useFilteredSounds();
+export const FilteredSoundList: FC<{ version: SoundVersion }> = ({ version }) => {
+  const filteredSounds = useFilteredSounds(version);
   return <SoundList sounds={filteredSounds} />;
 };

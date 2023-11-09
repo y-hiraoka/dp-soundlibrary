@@ -3,21 +3,21 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
 import Image from "next/image";
 import { FC, useId } from "react";
-import {
-  categories,
-  useActiveCategories,
-  useToggleActiveCategory,
-} from "../state/filteringState";
+import { categoriesMap } from "../data/all";
+import { SoundVersion } from "../data/sound-type";
+import { useActiveCategories, useToggleActiveCategory } from "../state/filteringState";
 import pokeball from "./pokeball-side-current.svg";
 
-export const Filtering: FC = () => {
-  const activeCategories = useActiveCategories();
-  const toggleActiveCategory = useToggleActiveCategory();
+export const Filtering: FC<{
+  version: SoundVersion;
+}> = ({ version }) => {
+  const activeCategories = useActiveCategories(version);
+  const toggleActiveCategory = useToggleActiveCategory(version);
 
   return (
     <div className="w-full overflow-x-auto rounded-md border border-white/10 bg-black/80 p-4 backdrop-blur">
       <div className="flex w-max space-x-2">
-        {categories.map((category) => {
+        {categoriesMap[version].map((category) => {
           const isActive = activeCategories.includes(category);
           return (
             <PokeCheckbox

@@ -1,3 +1,9 @@
+export type SoundVersion = "RG" | "DP";
+
+export function isSoundVersion(str: string): str is SoundVersion {
+  return ["RG", "DP"].includes(str);
+}
+
 export type SoundData = {
   id: string;
   title: string;
@@ -8,5 +14,5 @@ export type SoundData = {
   loopStart?: number;
   loopEnd?: number;
   wip?: true;
-  version: "RG" | "DP";
+  version: SoundVersion;
 };

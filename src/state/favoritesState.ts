@@ -7,7 +7,8 @@ import {
   useRecoilState,
   useRecoilValue,
 } from "recoil";
-import { dp_sounds } from "../data/dp";
+import { allSounds } from "../data/all";
+import { SoundData } from "../data/sound-type";
 
 const STORAGE_KEY = "__dp-soundlibrary-favorites-key";
 
@@ -20,7 +21,7 @@ const favoritesAtom = atom<string[]>({
   default: [],
 });
 
-export const useToggleFavorite = () => {
+export const useToggleFavorite = (): ((soundId: string) => void) => {
   return useRecoilCallback(
     ({ set }) =>
       (soundId: string) => {
@@ -46,7 +47,7 @@ const isFavoriteSoundSelectorFamily = selectorFamily({
     },
 });
 
-export const useIsFavoriteSound = (soundId: string) => {
+export const useIsFavoriteSound = (soundId: string): boolean => {
   return useRecoilValue(isFavoriteSoundSelectorFamily(soundId));
 };
 
@@ -68,10 +69,13 @@ export const FavoritesEffect: FC = () => {
   return null;
 };
 
-export const useFavoriteSounds = () => {
+export const useFavoriteSounds = (): SoundData[] => {
   const favorites = useRecoilValue(favoritesAtom);
   return useMemo(
-    () => dp_sounds.filter((sound) => favorites.includes(sound.id)),
+    () =>
+      favorites
+        .map((soundId) => allSounds.find((sound) => sound.id === soundId))
+        .filter((sound): sound is SoundData => sound !== undefined),
     [favorites],
   );
 };
