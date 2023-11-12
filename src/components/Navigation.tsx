@@ -12,7 +12,9 @@ export const Navigation: FC<{
 }> = ({ onNavigation }) => {
   return (
     <nav className="max-h-navigation w-fit space-y-6 overflow-y-auto rounded-md border-4 border-sidenav bg-white px-8 py-6">
-      <Image src={logo} alt="ルートに移動する" />
+      <Link href="/" className="block w-fit" onClick={onNavigation}>
+        <Image src={logo} alt="ルートに移動する" />
+      </Link>
       <div>
         <div className="mb-4 font-bold">ボックス</div>
         <div className="space-y-3 pl-4">
