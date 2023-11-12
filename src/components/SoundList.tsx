@@ -1,6 +1,7 @@
-import { Box, Stack } from "@chakra-ui/react";
+"use client";
+
 import { FC } from "react";
-import { SoundData } from "../data/sounds";
+import { SoundData, SoundVersion } from "../data/sound-type";
 import { useCachedSounds } from "../lib/use-cached-sounds";
 import { useIsOnline } from "../lib/use-is-online";
 import { useFavoriteSounds } from "../state/favoritesState";
@@ -12,17 +13,17 @@ const SoundList: FC<{ sounds: readonly SoundData[] }> = ({ sounds }) => {
   const cachedSounds = useCachedSounds();
 
   return (
-    <Stack as="ul" maxW="full" spacing="4">
+    <ul className="space-y-4">
       {sounds.map((sound) => (
-        <Box key={sound.id} as="li" listStyleType="none">
+        <li key={sound.id}>
           <SoundItem
             sound={sound}
             isOnline={isOnline}
             cached={cachedSounds.includes(sound.file)}
           />
-        </Box>
+        </li>
       ))}
-    </Stack>
+    </ul>
   );
 };
 
@@ -31,7 +32,7 @@ export const FavoriteSoundList: FC = () => {
   return <SoundList sounds={favoriteSounds} />;
 };
 
-export const FilteredSoundList: FC = () => {
-  const filteredSounds = useFilteredSounds();
+export const FilteredSoundList: FC<{ version: SoundVersion }> = ({ version }) => {
+  const filteredSounds = useFilteredSounds(version);
   return <SoundList sounds={filteredSounds} />;
 };

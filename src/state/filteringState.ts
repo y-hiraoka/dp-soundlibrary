@@ -1,32 +1,20 @@
-import {
-  atom,
-  selector,
-  useRecoilCallback,
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
-import Fuse from "fuse.js";
-import { sounds } from "../data/sounds";
+import { atomFamily, selectorFamily, useRecoilCallback, useRecoilValue } from "recoil";
+import { soundsVersionMap } from "../data/all";
+import { SoundData, SoundVersion } from "../data/sound-type";
 
-export const categories = [...new Set(sounds.map((s) => s.category))];
-
-const filteringTextAtom = atom<string>({
-  key: "filteringTextAtom",
-  default: "",
-});
-export const useFilteringText = () => useRecoilValue(filteringTextAtom);
-export const useSetFilteringText = () => useSetRecoilState(filteringTextAtom);
-
-const activeCategoriesAtom = atom<string[]>({
+const activeCategoriesAtom = atomFamily<string[], SoundVersion>({
   key: "activeCategoriesAtom",
   default: [],
 });
-export const useActiveCategories = () => useRecoilValue(activeCategoriesAtom);
-export const useToggleActiveCategory = () =>
+export const useActiveCategories = (version: SoundVersion): string[] =>
+  useRecoilValue(activeCategoriesAtom(version));
+export const useToggleActiveCategory = (
+  version: SoundVersion,
+): ((category: string) => void) =>
   useRecoilCallback(
     ({ set }) =>
       (category: string) => {
-        set(activeCategoriesAtom, (prevState) => {
+        set(activeCategoriesAtom(version), (prevState) => {
           if (prevState.includes(category)) {
             return prevState.filter((c) => c !== category);
           } else {
@@ -34,59 +22,24 @@ export const useToggleActiveCategory = () =>
           }
         });
       },
-    []
+    [version],
   );
 
-const soundsFuse = new Fuse(sounds, { keys: ["title"] });
-
-const filteredSoundsSelector = selector({
+const filteredSoundsSelector = selectorFamily({
   key: "filteredSoundsSelector",
-  get: ({ get }) => {
-    const filteringText = get(filteringTextAtom);
-    const activeCategories = get(activeCategoriesAtom);
+  get:
+    (version: SoundVersion) =>
+    ({ get }) => {
+      const activeCategories = get(activeCategoriesAtom(version));
+      const sounds = soundsVersionMap[version];
 
-    if (!filteringText) {
       if (activeCategories.length === 0) {
         return sounds;
       } else {
         return sounds.filter((sound) => activeCategories.includes(sound.category));
       }
-    } else {
-      const searched = soundsFuse.search(filteringText).map((element) => element.item);
-      return activeCategories.length === 0
-        ? searched
-        : searched.filter((element) => activeCategories.includes(element.category));
-    }
-  },
+    },
 });
 
-const filteredSoundsCountSelector = selector({
-  key: "filteredSoundsCountSelector",
-  get: ({ get }) => {
-    const filteredSounds = get(filteredSoundsSelector);
-    return filteredSounds.length;
-  },
-});
-
-const soundsAreFilteredSelector = selector({
-  key: "isFilteringSelector",
-  get: ({ get }) => {
-    const filteringText = get(filteringTextAtom);
-    const activeCategories = get(activeCategoriesAtom);
-
-    return !!filteringText || activeCategories.length !== 0;
-  },
-});
-
-export const useFilteredSounds = () => useRecoilValue(filteredSoundsSelector);
-export const useFilteredSoundsCount = () => useRecoilValue(filteredSoundsCountSelector);
-export const useSoundsAreFiltered = () => useRecoilValue(soundsAreFilteredSelector);
-export const useResetFiltering = () =>
-  useRecoilCallback(
-    ({ reset }) =>
-      () => {
-        reset(filteringTextAtom);
-        reset(activeCategoriesAtom);
-      },
-    []
-  );
+export const useFilteredSounds = (version: SoundVersion): readonly SoundData[] =>
+  useRecoilValue(filteredSoundsSelector(version));

@@ -1,43 +1,74 @@
-import { Box, Container, HStack, Link } from "@chakra-ui/react";
-import { FC } from "react";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
+"use client";
 
-export const Navigation: FC = () => {
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { FC, ReactNode } from "react";
+import currentIndicator from "./current-indicator.svg";
+import logo from "./pokeball-logo.svg";
+
+export const Navigation: FC<{
+  onNavigation?: () => void;
+}> = ({ onNavigation }) => {
   return (
-    <Box bgColor="whiteAlpha.300" backdropFilter="blur(4px)">
-      <Container maxW="container.sm">
-        <HStack as="nav" spacing="4">
-          <NavigationLink href="/">BGM</NavigationLink>
-          <NavigationLink href="/favorites">お気に入り</NavigationLink>
-        </HStack>
-      </Container>
-    </Box>
+    <nav className="max-h-navigation w-fit space-y-6 overflow-y-auto rounded-md border-4 border-sidenav bg-white px-8 py-6">
+      <Link href="/" className="block w-fit" onClick={onNavigation}>
+        <Image src={logo} alt="ルートに移動する" />
+      </Link>
+      <div>
+        <div className="mb-4 font-bold">ボックス</div>
+        <div className="space-y-3 pl-4">
+          <NavigationLink href="/rg" onNavigation={onNavigation}>
+            <span className="font-bold text-pokemon-red">赤</span>・
+            <span className="font-bold text-pokemon-green">緑</span>
+          </NavigationLink>
+          <NavigationLink href="/dp" onNavigation={onNavigation}>
+            <span className="font-bold text-pokemon-diamond">ダイヤモンド</span>・
+            <span className="font-bold text-pokemon-pearl">パール</span>
+          </NavigationLink>
+          <NavigationLink href="/favorites" onNavigation={onNavigation}>
+            お気に入り
+          </NavigationLink>
+        </div>
+      </div>
+      <div>
+        <div className="mb-4 font-bold">その他</div>
+        <div className="space-y-3 pl-4">
+          <NavigationLink href="/about" onNavigation={onNavigation}>
+            サイトについて
+          </NavigationLink>
+          <a
+            href="https://github.com/y-hiraoka/dp-soundlibrary"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+            onClick={onNavigation}
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
+    </nav>
   );
 };
 
-const NavigationLink: FC<{ href: string; children: string }> = ({
-  href,
-  children,
-}) => {
-  const { pathname } = useRouter();
+const NavigationLink: FC<{
+  href: string;
+  children: ReactNode;
+  onNavigation?: () => void;
+}> = ({ href, children, onNavigation }) => {
+  const pathname = usePathname();
   const isActive = href === pathname;
 
   return (
-    <Link
-      as={NextLink}
-      href={href}
-      color={isActive ? "yellow.300" : "white"}
-      fontWeight="bold"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      height="12"
-      px="4"
-      borderBottomWidth="2px"
-      borderBottomColor={isActive ? "yellow" : "transparent"}
-      _hover={{ color: isActive ? undefined : "yellow.200" }}
-    >
+    <Link href={href} className="relative block" onClick={onNavigation}>
+      {isActive && (
+        <Image
+          src={currentIndicator}
+          alt=""
+          className="absolute -left-4 top-1/2 -translate-y-1/2"
+        />
+      )}
       {children}
     </Link>
   );

@@ -1,29 +1,12 @@
-import {
-  Box,
-  Container,
-  Flex,
-  Grid,
-  HStack,
-  Icon,
-  IconButton,
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+"use client";
+
 import dynamic from "next/dynamic";
-import { FC, useCallback, useRef } from "react";
+import { FC, useCallback } from "react";
 import {
+  MdOutlineSkipNext,
+  MdOutlineSkipPrevious,
   MdPause,
   MdPlayArrow,
-  MdSkipNext,
-  MdSkipPrevious,
-  MdVolumeDown,
-  MdVolumeMute,
-  MdVolumeOff,
-  MdVolumeUp,
 } from "react-icons/md";
 import { useKeybind } from "../lib/keybind";
 import {
@@ -34,11 +17,13 @@ import {
   usePrevSound,
 } from "../state/playerState";
 import { FavoriteButton } from "./FavoriteButton";
+import { IconButton } from "./IconButton";
+import { NavigationDrawerButton } from "./NavigationDrawer";
+import { VolumeSlider } from "./VolumeSlider";
 
 const ShareButton = dynamic(() => import("./ShareButton"), { ssr: false });
 
 export const AudioController: FC = () => {
-  const shouldShowVolumeSlider = useBreakpointValue([false, true]); // スマホにボリューム調整要らんやろ
   const nowPlaying = useNowPlayingSound();
   const nextSound = useNextSound();
   const prevSound = usePrevSound();
@@ -51,14 +36,8 @@ export const AudioController: FC = () => {
         : player.pause()
       : player.start(nextSound);
   }, [audioState.isPaused, audioState.isPlaying, nextSound, player]);
-  const playPrevSound = useCallback(
-    () => player.start(prevSound),
-    [player, prevSound]
-  );
-  const playNextSound = useCallback(
-    () => player.start(nextSound),
-    [nextSound, player]
-  );
+  const playPrevSound = useCallback(() => player.start(prevSound), [player, prevSound]);
+  const playNextSound = useCallback(() => player.start(nextSound), [nextSound, player]);
 
   useKeybind({
     key: " ",
@@ -75,158 +54,54 @@ export const AudioController: FC = () => {
     onKeyDown: playPrevSound,
   });
 
-  return (
-    <>
-      <Box bgColor="blackAlpha.900">
-        <Container maxW="container.sm">
-          <Flex alignItems="center" flexDirection="column" pt="2" pb="6">
-            <Text
-              as="span"
-              fontWeight="bold"
-              color="white"
-              noOfLines={1}
-              title={nowPlaying?.title}
-            >
-              {nowPlaying?.title}
-            </Text>
-            <Grid
-              w="full"
-              templateColumns="1fr auto 1fr"
-              marginTop="4"
-              alignItems="center"
-            >
-              <Box justifySelf="start">
-                {shouldShowVolumeSlider ? (
-                  <VolumeSlider />
-                ) : (
-                  nowPlaying && <FavoriteButton soundId={nowPlaying.id} />
-                )}
-              </Box>
-              <HStack spacing="4">
-                <IconButton
-                  size="md"
-                  borderRadius="full"
-                  variant="ghost"
-                  color="white"
-                  _hover={{ background: "whiteAlpha.400" }}
-                  _active={{ background: "whiteAlpha.500" }}
-                  aria-label="前の曲に戻る"
-                  icon={<Icon fontSize="3xl" as={MdSkipPrevious} />}
-                  onClick={playPrevSound}
-                />
-                <IconButton
-                  size="lg"
-                  borderRadius="full"
-                  aria-label="曲を再生する"
-                  icon={
-                    <Icon
-                      fontSize="3xl"
-                      as={
-                        audioState.isPlaying
-                          ? audioState.isPaused
-                            ? MdPlayArrow
-                            : MdPause
-                          : MdPlayArrow
-                      }
-                    />
-                  }
-                  onClick={togglePlay}
-                />
-                <IconButton
-                  size="md"
-                  borderRadius="full"
-                  variant="ghost"
-                  color="white"
-                  _hover={{ background: "whiteAlpha.400" }}
-                  _active={{ background: "whiteAlpha.500" }}
-                  aria-label="次の曲に進む"
-                  icon={<Icon fontSize="3xl" as={MdSkipNext} />}
-                  onClick={playNextSound}
-                />
-              </HStack>
-              <HStack justifySelf="end">
-                {shouldShowVolumeSlider && nowPlaying !== undefined && (
-                  <FavoriteButton soundId={nowPlaying.id} />
-                )}
-                <ShareButton />
-              </HStack>
-            </Grid>
-          </Flex>
-        </Container>
-      </Box>
-    </>
-  );
-};
-
-const VolumeSlider: FC = () => {
-  const audioState = useAudioState();
-  const player = useAudioPlayer();
-
-  const previousVolumeRef = useRef<number>();
-
-  const toggleMute = useCallback(() => {
-    if (previousVolumeRef.current === undefined) {
-      previousVolumeRef.current = audioState.volume;
-      player.setVolume(0);
-    } else {
-      player.setVolume(previousVolumeRef.current);
-      previousVolumeRef.current = undefined;
-    }
-  }, [audioState.volume, player]);
-
-  useKeybind({
-    key: "ArrowUp",
-    altKey: true,
-    onKeyDown: () => player.setVolume(audioState.volume + 0.01),
-  });
-  useKeybind({
-    key: "ArrowDown",
-    altKey: true,
-    onKeyDown: () => player.setVolume(audioState.volume - 0.01),
-  });
+  const PlayButtonIcon = audioState.isPlaying
+    ? audioState.isPaused
+      ? MdPlayArrow
+      : MdPause
+    : MdPlayArrow;
 
   return (
-    <HStack spacing="1">
-      <IconButton
-        aria-label="show volume slider"
-        onClick={toggleMute}
-        variant="ghost"
-        borderRadius="full"
-        color="white"
-        size="sm"
-        _hover={{ background: "whiteAlpha.400" }}
-        _active={{ background: "whiteAlpha.500" }}
-        icon={
-          <Icon
-            as={
-              audioState.volume === 0
-                ? MdVolumeOff
-                : audioState.volume < 0.33
-                ? MdVolumeMute
-                : audioState.volume < 0.66
-                ? MdVolumeDown
-                : MdVolumeUp
-            }
-            fontSize="3xl"
+    <div className="grid h-audio-controller grid-cols-[1fr_auto_1fr] items-center rounded-md border border-white/10 bg-black/80 px-2 py-3 backdrop-blur md:px-6">
+      <div className="md:hidden">
+        <NavigationDrawerButton />
+      </div>
+      <div className="hidden md:block">
+        <VolumeSlider />
+      </div>
+      <div className="flex flex-col items-center space-y-2">
+        <p
+          className="h-4 w-fit text-xs font-bold text-contrast"
+          title={nowPlaying?.title}
+        >
+          {nowPlaying?.title}
+        </p>
+        <div className="flex items-center space-x-3">
+          <IconButton
+            icon={<MdOutlineSkipPrevious />}
+            variant="ghost"
+            onClick={playPrevSound}
+            aria-label="前の曲に戻る"
           />
-        }
-      />
-      <Slider
-        aria-label="ボリューム調整"
-        onChange={(value) => player.setVolume(value)}
-        focusThumbOnChange={false}
-        value={audioState.volume}
-        min={0}
-        max={1}
-        step={0.01}
-        w="24"
-        colorScheme="yellow"
-      >
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
-    </HStack>
+          <IconButton
+            icon={<PlayButtonIcon />}
+            variant="solid"
+            aria-label="曲を再生する"
+            onClick={togglePlay}
+          />
+          <IconButton
+            icon={<MdOutlineSkipNext />}
+            variant="ghost"
+            onClick={playNextSound}
+            aria-label="次の曲に進む"
+          />
+        </div>
+      </div>
+      <div className="flex items-center space-x-2 justify-self-end">
+        <div className="hidden md:block">
+          {nowPlaying !== undefined && <FavoriteButton soundId={nowPlaying.id} />}
+        </div>
+        <ShareButton />
+      </div>
+    </div>
   );
 };

@@ -1,23 +1,22 @@
-import { Icon, IconButton } from "@chakra-ui/react";
 import { FC } from "react";
-import { MdStar } from "react-icons/md";
+import { MdStar, MdStarOutline } from "react-icons/md";
 import { useIsFavoriteSound, useToggleFavorite } from "../state/favoritesState";
+import { IconButton } from "./IconButton";
 
 export const FavoriteButton: FC<{ soundId: string }> = ({ soundId }) => {
   const isFavoriteSound = useIsFavoriteSound(soundId);
   const toggleFavorite = useToggleFavorite();
+
+  const StarIcon = isFavoriteSound ? MdStar : MdStarOutline;
 
   return (
     <IconButton
       aria-label="お気に入り"
       role="checkbox"
       aria-checked={isFavoriteSound}
-      icon={<Icon as={MdStar} fontSize="2xl" />}
-      size="sm"
-      bg="transparent"
-      color={isFavoriteSound ? "yellow.300" : "whiteAlpha.500"}
-      _hover={{ bgColor: "whiteAlpha.300" }}
-      _active={{}}
+      icon={<StarIcon />}
+      variant="ghost"
+      color={isFavoriteSound ? "yellow" : "contrast"}
       onClick={() => toggleFavorite(soundId)}
     />
   );

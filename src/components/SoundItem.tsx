@@ -1,17 +1,10 @@
-import {
-  HStack,
-  Icon,
-  IconButton,
-  Stack,
-  Text,
-  Divider,
-  Center,
-} from "@chakra-ui/react";
+import classNames from "classnames";
 import { memo, FC } from "react";
 import { MdMusicNote, MdPlayArrow } from "react-icons/md";
-import { SoundData } from "../data/sounds";
+import { SoundData } from "../data/sound-type";
 import { useAudioPlayer, useIsNowPlaying } from "../state/playerState";
 import { FavoriteButton } from "./FavoriteButton";
+import { IconButton } from "./IconButton";
 
 type Props = {
   sound: SoundData;
@@ -23,61 +16,34 @@ export const SoundItem: FC<Props> = memo(({ sound, isOnline, cached }) => {
   const player = useAudioPlayer();
   const isNowPlaying = useIsNowPlaying(sound.id);
 
-  const play = () => {
-    player.start(sound);
-    window.gtag("event", "start", {
-      event_category: "Sounds",
-      event_label: sound.id,
-    });
-  };
-
   const playButtonIsDisabled = !isOnline && !cached;
 
   return (
-    <HStack
-      spacing="4"
-      borderRadius="xl"
-      position="relative"
-      bgColor="whiteAlpha.200"
-      py="2"
-      pl="4"
-      pr="4"
-      color={isNowPlaying ? "yellow.300" : "white"}
-    >
-      {isNowPlaying ? (
-        <Center w="10" h="10">
-          <Icon as={MdMusicNote} fontSize="2xl" />
-        </Center>
-      ) : (
-        <IconButton
-          borderRadius="full"
-          bgColor="transparent"
-          border="1px solid white"
-          _hover={{
-            bgColor: !playButtonIsDisabled ? "whiteAlpha.500" : "trasparent",
-          }}
-          _active={{
-            bgColor: !playButtonIsDisabled ? "whiteAlpha.700" : "transparent",
-          }}
-          icon={<Icon as={MdPlayArrow} fontSize="xl" />}
-          aria-label="再生スタート"
-          onClick={play}
-          isDisabled={playButtonIsDisabled}
-        />
+    <div
+      className={classNames(
+        "flex items-center space-x-4 rounded-lg border bg-white/[8%] px-4 py-3",
+        isNowPlaying ? "border-yellow/75" : "border-white/[18%]",
       )}
-      <Stack spacing="1" flex={1}>
-        <Text as="span" fontWeight="bold">
+    >
+      <IconButton
+        size="sm"
+        icon={isNowPlaying ? <MdMusicNote /> : <MdPlayArrow />}
+        aria-label="再生スタート"
+        onClick={() => player.start(sound)}
+        disabled={playButtonIsDisabled}
+        variant="outline"
+      />
+      <div className="flex-1 space-y-1">
+        <span className={classNames("text-sm font-bold leading-none text-contrast")}>
           {sound.title}
-        </Text>
-        <Divider as="div" />
-        <Text as="span" fontSize="sm">
+        </span>
+        <hr className={classNames("border-t border-white/50")} />
+        <span className={classNames("text-xs leading-none text-contrast-sub")}>
           {sound.category}
-        </Text>
-      </Stack>
-      <Center>
-        <FavoriteButton soundId={sound.id} />
-      </Center>
-    </HStack>
+        </span>
+      </div>
+      <FavoriteButton soundId={sound.id} />
+    </div>
   );
 });
 

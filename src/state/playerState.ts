@@ -7,7 +7,8 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
-import { SoundData, sounds } from "../data/sounds";
+import { dp_sounds } from "../data/dp";
+import { SoundData } from "../data/sound-type";
 
 type AudioState = {
   volume: number;
@@ -89,7 +90,7 @@ export const useAudioPlayer = () => {
             }));
           });
       },
-    [setAudioState]
+    [setAudioState],
   );
 
   const resume = useCallback(async () => {
@@ -123,12 +124,12 @@ export const useAudioPlayer = () => {
       }
       setAudioState((prev) => ({ ...prev, volume }));
     },
-    [setAudioState]
+    [setAudioState],
   );
 
   return useMemo(
     () => ({ start, resume, pause, setVolume }),
-    [pause, resume, setVolume, start]
+    [pause, resume, setVolume, start],
   );
 };
 
@@ -142,10 +143,10 @@ const nextSoundSelector = selector<SoundData>({
   get: ({ get }) => {
     const nowPlaying = get(nowPlayingSoundSelector);
 
-    if (nowPlaying === undefined) return sounds[0];
+    if (nowPlaying === undefined) return dp_sounds[0];
 
-    const currentIndex = sounds.findIndex((s) => s.id === nowPlaying.id);
-    return sounds[(currentIndex + 1) % sounds.length];
+    const currentIndex = dp_sounds.findIndex((s) => s.id === nowPlaying.id);
+    return dp_sounds[(currentIndex + 1) % dp_sounds.length];
   },
 });
 
@@ -154,10 +155,10 @@ const prevSoundSelector = selector<SoundData>({
   get: ({ get }) => {
     const nowPlaying = get(nowPlayingSoundSelector);
 
-    if (nowPlaying === undefined) return sounds[sounds.length - 1];
+    if (nowPlaying === undefined) return dp_sounds[dp_sounds.length - 1];
 
-    const currentIndex = sounds.findIndex((s) => s === nowPlaying);
-    return sounds[currentIndex - 1 < 0 ? sounds.length - 1 : currentIndex - 1];
+    const currentIndex = dp_sounds.findIndex((s) => s === nowPlaying);
+    return dp_sounds[currentIndex - 1 < 0 ? dp_sounds.length - 1 : currentIndex - 1];
   },
 });
 

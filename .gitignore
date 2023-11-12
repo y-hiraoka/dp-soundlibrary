@@ -36,5 +36,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# following the guideline of Pokemon dp sound library
-/public/sounds/*.wav
+# following the guideline of Pokemon GAME Sound Library
+/public/sounds/**/*.wav
