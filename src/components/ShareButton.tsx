@@ -1,8 +1,14 @@
 import { FC } from "react";
 import { MdShare } from "react-icons/md";
+import { SoundVersion } from "../data/sound-type";
 import { createIntentTweetLink } from "../lib/createIntentTweetLink";
 import { useNowPlayingSound } from "../state/playerState";
 import { IconButton } from "./IconButton";
+
+const versionTitleMap: Record<SoundVersion, string> = {
+  RG: "赤・緑",
+  DP: "ダイヤモンド・パール",
+};
 
 const ShareButton: FC = () => {
   const nowPlaying = useNowPlayingSound();
@@ -11,8 +17,10 @@ const ShareButton: FC = () => {
 
   const sharingText =
     nowPlaying === undefined
-      ? "『ポケットモンスター ダイヤモンド / パール』の BGM を無限ループで楽しもう！\n"
-      : `『ポケットモンスター ダイヤモンド / パール』の BGM 「${nowPlaying.title}」 を聴こう！\n`;
+      ? "『ポケットモンスター』の BGM を無限ループで楽しもう！\n"
+      : `『ポケットモンスター ${versionTitleMap[nowPlaying.version]}』の BGM 「${
+          nowPlaying.title
+        }」 を聴こう！\n`;
 
   return (
     <IconButton

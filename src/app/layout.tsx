@@ -56,12 +56,12 @@ export const metadata: Metadata = {
     template: "%s | ポケモン Sound Library ループプレイヤー",
   },
   description:
-    "『ポケットモンスターダイヤモンド・パール』の BGM をゲームプレイ中のようにループして再生できる Web サイトです。作業用 BGM などに役立てることができます。",
+    "『ポケットモンスター』の BGM をゲームプレイ中のようにループして再生できる Web サイトです。作業用 BGM などに役立てることができます。",
   openGraph: {
     type: "website",
     title: "ポケモン Sound Library ループプレイヤー",
     description:
-      "『ポケットモンスターダイヤモンド・パール』の BGM をゲームプレイ中のようにループして再生できる Web サイトです。作業用 BGM などに役立てることができます。",
+      "『ポケットモンスター』の BGM をゲームプレイ中のようにループして再生できる Web サイトです。作業用 BGM などに役立てることができます。",
   },
   twitter: {
     card: "summary",
