@@ -36,5 +36,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: versionTitleMap[upperVersionParam],
+    alternates: {
+      canonical: `/${upperVersionParam.toLowerCase()}`,
+    },
   };
 }

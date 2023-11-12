@@ -20,4 +20,7 @@ export default FavoritePage;
 
 export const metadata: Metadata = {
   title: "サイトについて",
+  alternates: {
+    canonical: "/about",
+  },
 };
