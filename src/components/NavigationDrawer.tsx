@@ -46,7 +46,7 @@ export const NavigationDrawerButton: FC = () => {
                 <Dialog.Title as="h3" className="sr-only">
                   メニュー
                 </Dialog.Title>
-                <Navigation />
+                <Navigation onNavigation={toggleIsOpen} />
               </Dialog.Panel>
             </Transition.Child>
           </div>
