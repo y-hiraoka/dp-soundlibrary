@@ -1,10 +1,14 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { useEffect, FC } from "react";
 
 export const GA_TRACKING_ID = "G-6B3JF8MB9J";
 
 export const AnalyticsScript: FC = () => {
+  useGoogleAnalytics();
+
   return (
     <>
       <Script
@@ -29,16 +33,18 @@ export const AnalyticsScript: FC = () => {
   );
 };
 
-export function useGoogleAnalytics() {
-  const router = useRouter();
+function useGoogleAnalytics() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const handleRouteChange = (url: URL) => {
-      window.gtag("config", GA_TRACKING_ID, {
-        page_path: url,
-      });
-    };
-    router.events.on("routeChangeComplete", handleRouteChange);
-    return () => router.events.off("routeChangeComplete", handleRouteChange);
-  }, [router.events]);
+    if (process.env.NODE_ENV !== "production") return;
+
+    const search = searchParams.toString();
+    const url = search ? `${pathname}?${search}` : pathname;
+
+    window.gtag("config", GA_TRACKING_ID, {
+      page_path: url,
+    });
+  }, [pathname, searchParams]);
 }
