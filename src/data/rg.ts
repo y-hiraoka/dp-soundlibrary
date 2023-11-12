@@ -216,6 +216,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/20.wav",
     category: "施設",
     categoryEn: "Facilities",
+    loopStart: 5.477075,
+    loopEnd: 60.935737,
   },
   {
     version: "RG",
@@ -225,6 +227,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/21.wav",
     category: "どうろ",
     categoryEn: "Routes",
+    loopStart: 1.184195,
+    loopEnd: 39.362903,
   },
   {
     version: "RG",
@@ -243,6 +247,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/23.wav",
     category: "まち",
     categoryEn: "Towns",
+    loopStart: 1.168662,
+    loopEnd: 24.679818,
   },
   {
     version: "RG",
@@ -252,6 +258,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/24.wav",
     category: "名所",
     categoryEn: "Iconic Locations",
+    loopStart: 2.049728,
+    loopEnd: 34.202154,
   },
   {
     version: "RG",
@@ -261,6 +269,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/25.wav",
     category: "どうろ",
     categoryEn: "Routes",
+    loopStart: 8.641882,
+    loopEnd: 38.38059,
   },
   {
     version: "RG",
@@ -279,6 +289,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/27.wav",
     category: "バトル",
     categoryEn: "Battles",
+    loopStart: 3.732313,
+    loopEnd: 14.986122,
   },
   {
     version: "RG",
@@ -288,6 +300,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/28.wav",
     category: "バトル",
     categoryEn: "Battles",
+    loopStart: 13.856258,
+    loopEnd: 102.672721,
   },
   {
     version: "RG",
@@ -297,6 +311,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/29.wav",
     category: "バトル",
     categoryEn: "Battles",
+    loopStart: 4.224285,
+    loopEnd: 37.983424,
   },
   {
     version: "RG",
@@ -306,6 +322,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/30.wav",
     category: "どうろ",
     categoryEn: "Routes",
+    loopStart: 1.143627,
+    loopEnd: 69.868322,
   },
   {
     version: "RG",
@@ -315,6 +333,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/31.wav",
     category: "まち",
     categoryEn: "Towns",
+    loopStart: 8.599841,
+    loopEnd: 84.960612,
   },
   {
     version: "RG",
@@ -324,6 +344,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/32.wav",
     category: "施設",
     categoryEn: "Facilities",
+    loopStart: 64.769229,
+    loopEnd: 125.857868,
   },
   {
     version: "RG",
@@ -333,6 +355,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/33.wav",
     category: "まち",
     categoryEn: "Towns",
+    loopStart: 31.592993,
+    loopEnd: 60.530023,
   },
   {
     version: "RG",
@@ -342,6 +366,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/34.wav",
     category: "施設",
     categoryEn: "Facilities",
+    loopStart: 40.195419,
+    loopEnd: 76.366689,
   },
   {
     version: "RG",
@@ -351,6 +377,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/35.wav",
     category: "敵組織",
     categoryEn: "Villainous Teams",
+    loopStart: 7.909592,
+    loopEnd: 14.139184,
   },
   {
     version: "RG",
@@ -360,6 +388,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/36.wav",
     category: "敵組織",
     categoryEn: "Villainous Teams",
+    loopStart: 57.479048,
+    loopEnd: 124.394467,
   },
   {
     version: "RG",
@@ -369,6 +399,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/37.wav",
     category: "施設",
     categoryEn: "Facilities",
+    loopStart: 3.220204,
+    loopEnd: 61.947665,
   },
   {
     version: "RG",
@@ -378,6 +410,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/38.wav",
     category: "どうろ",
     categoryEn: "Routes",
+    loopStart: 14.266849,
+    loopEnd: 62.495056,
   },
   {
     version: "RG",
@@ -387,6 +421,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/39.wav",
     category: "まち",
     categoryEn: "Towns",
+    loopStart: 23.05449,
+    loopEnd: 44.759229,
   },
   {
     version: "RG",
@@ -396,6 +432,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/40.wav",
     category: "施設",
     categoryEn: "Facilities",
+    loopStart: 15.298231,
+    loopEnd: 65.938481,
   },
   {
     version: "RG",
@@ -405,6 +443,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/41.wav",
     category: "イベント",
     categoryEn: "Events",
+    loopStart: 11.682789,
+    loopEnd: 18.314127,
   },
   {
     version: "RG",
@@ -414,6 +454,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/42.wav",
     category: "どうろ",
     categoryEn: "Routes",
+    loopStart: 31.111497,
+    loopEnd: 57.636371,
   },
   {
     version: "RG",
@@ -423,6 +465,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/43.wav",
     category: "バトル",
     categoryEn: "Battles",
+    loopStart: 29.362041,
+    loopEnd: 89.847483,
   },
   {
     version: "RG",
@@ -432,6 +476,8 @@ const _sounds: SoundData[] = [
     file: "/sounds/rg/44.wav",
     category: "イベント",
     categoryEn: "Events",
+    loopStart: 24.77746,
+    loopEnd: 47.283786,
   },
   {
     version: "RG",
