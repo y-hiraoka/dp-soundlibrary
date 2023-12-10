@@ -1,11 +1,11 @@
-import { PagesFunction, R2Bucket, Response } from "@cloudflare/workers-types";
+import { EventContext, R2Bucket } from "@cloudflare/workers-types";
 
 interface Env {
   SOUNDLIBRARY_BUCKET: R2Bucket;
 }
 
-export const onRequest: PagesFunction<Env, "version" | "fileName", never> = async (
-  context,
+export const onRequest = async (
+  context: EventContext<Env, "version" | "fileName", never>,
 ): Promise<Response> => {
   if (
     typeof context.params.version !== "string" ||
@@ -22,5 +22,5 @@ export const onRequest: PagesFunction<Env, "version" | "fileName", never> = asyn
     return new Response("Not Found", { status: 404 });
   }
 
-  return new Response(file.body);
+  return new Response(file.body as ReadableStream);
 };
