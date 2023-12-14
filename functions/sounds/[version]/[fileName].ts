@@ -1,22 +1,13 @@
 interface Env {
-  SOUNDLIBRARY_BUCKET: R2Bucket;
+  SOUNDLIBRARY_PUBLIC_BUCKET_DOMAIN: string;
 }
 
-export const onRequest: PagesFunction<Env, "version" | "fileName"> = async (context) => {
-  if (
-    typeof context.params.version !== "string" ||
-    typeof context.params.fileName !== "string"
-  ) {
-    return new Response("Bad Request", { status: 400 });
-  }
+export const onRequest: PagesFunction<Env> = async (context) => {
+  const bucketURL = new URL(context.request.url);
 
-  const file = await context.env.SOUNDLIBRARY_BUCKET.get(
-    `sounds/${context.params.version}/${context.params.fileName}`,
-  );
+  bucketURL.hostname = context.env.SOUNDLIBRARY_PUBLIC_BUCKET_DOMAIN;
 
-  if (file === null) {
-    return new Response("Not Found", { status: 404 });
-  }
-
-  return new Response(file.body);
+  return fetch(bucketURL, {
+    headers: context.request.headers,
+  });
 };
