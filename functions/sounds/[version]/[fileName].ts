@@ -7,7 +7,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   bucketURL.hostname = context.env.SOUNDLIBRARY_PUBLIC_BUCKET_DOMAIN;
 
-  return fetch(bucketURL, {
+  const response = await fetch(bucketURL, {
     headers: context.request.headers,
   });
+
+  response.headers.set("Cache-Control", "no-cache");
+
+  return response;
 };
