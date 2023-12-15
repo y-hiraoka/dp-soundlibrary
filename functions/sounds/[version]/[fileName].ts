@@ -12,6 +12,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   });
 
   return new Response(response.body, {
+    status: response.status,
     headers: {
       ...response.headers,
       "Cache-Control": "no-cache",
