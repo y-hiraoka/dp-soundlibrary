@@ -38,3 +38,5 @@ yarn-error.log*
 
 # following the guideline of Pokemon GAME Sound Library
 /public/sounds/**/*.wav
+
+.wrangler
