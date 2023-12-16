@@ -1,3 +1,5 @@
+"use client";
+
 import { FC } from "react";
 import { MdShare } from "react-icons/md";
 import { SoundVersion } from "../data/sound-type";
@@ -10,46 +12,45 @@ const versionTitleMap: Record<SoundVersion, string> = {
   DP: "ダイヤモンド・パール",
 };
 
-const ShareButton: FC = () => {
+export const ShareButton: FC = () => {
   const nowPlaying = useNowPlayingSound();
 
-  const canShare = typeof window !== "undefined" && window.navigator?.share !== undefined;
+  const clickHandler = () => {
+    const canShare =
+      typeof window !== "undefined" && window.navigator?.share !== undefined;
 
-  const sharingText =
-    nowPlaying === undefined
-      ? "『ポケットモンスター』の BGM を無限ループで楽しもう！\n"
-      : `『ポケットモンスター ${versionTitleMap[nowPlaying.version]}』の BGM 「${
-          nowPlaying.title
-        }」 を聴こう！\n`;
+    const sharingText =
+      nowPlaying === undefined
+        ? "『ポケットモンスター』の BGM を無限ループで楽しもう！\n"
+        : `『ポケットモンスター ${versionTitleMap[nowPlaying.version]}』の BGM 「${
+            nowPlaying.title
+          }」 を聴こう！\n`;
+
+    if (canShare) {
+      navigator.share({
+        title: "Pokemon Sound Library ループプレイヤー",
+        text: sharingText,
+        url: "https://pokemon-soundlibrary.stin.ink",
+      });
+    } else {
+      window.open(
+        createIntentTweetLink({
+          text: sharingText,
+          url: "https://pokemon-soundlibrary.stin.ink",
+        }),
+        "_blank",
+        "noreferrer",
+      );
+    }
+  };
 
   return (
     <IconButton
       variant="ghost"
       color="contrast"
-      aria-label={
-        canShare ? "このWebサイトをシェアする" : "このWebサイトをTwitterでシェアする"
-      }
+      aria-label={"このWebサイトをシェアする"}
       icon={<MdShare />}
-      onClick={() => {
-        if (canShare) {
-          navigator.share({
-            title: "Pokemon DP ループプレイヤー",
-            text: sharingText,
-            url: "https://dp-soundlibrary.stin.ink",
-          });
-        } else {
-          window.open(
-            createIntentTweetLink({
-              text: sharingText,
-              url: "https://dp-soundlibrary.stin.ink",
-            }),
-            "_blank",
-            "noreferrer",
-          );
-        }
-      }}
+      onClick={clickHandler}
     />
   );
 };
-
-export default ShareButton;

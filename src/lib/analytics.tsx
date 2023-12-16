@@ -2,18 +2,34 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
-import { useEffect, FC } from "react";
+import { useEffect, FC, Suspense } from "react";
 
-export const GA_TRACKING_ID = "G-6B3JF8MB9J";
+export const GoogleAnalytics: FC<{ trackingId: string }> = ({ trackingId }) => {
+  return (
+    <Suspense fallback={null}>
+      <GoogleAnalyticsInner trackingId={trackingId} />
+    </Suspense>
+  );
+};
 
-export const AnalyticsScript: FC = () => {
-  useGoogleAnalytics();
+const GoogleAnalyticsInner: FC<{ trackingId: string }> = ({ trackingId }) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const search = searchParams.toString();
+    const url = search ? `${pathname}?${search}` : pathname;
+
+    window.gtag("config", trackingId, {
+      page_path: url,
+    });
+  }, [pathname, searchParams, trackingId]);
 
   return (
     <>
       <Script
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
       />
       <Script
         id="gtag-init"
@@ -23,7 +39,7 @@ export const AnalyticsScript: FC = () => {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_TRACKING_ID}', {
+            gtag('config', '${trackingId}', {
               page_path: window.location.pathname,
             });
           `,
@@ -32,19 +48,3 @@ export const AnalyticsScript: FC = () => {
     </>
   );
 };
-
-function useGoogleAnalytics() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    if (process.env.NODE_ENV !== "production") return;
-
-    const search = searchParams.toString();
-    const url = search ? `${pathname}?${search}` : pathname;
-
-    window.gtag("config", GA_TRACKING_ID, {
-      page_path: url,
-    });
-  }, [pathname, searchParams]);
-}

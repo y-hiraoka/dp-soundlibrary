@@ -12,7 +12,7 @@ type Props = {
   cached: boolean;
 };
 
-export const SoundItem: FC<Props> = memo(({ sound, isOnline, cached }) => {
+export const SoundItem: FC<Props> = memo(function SoundItem({ sound, isOnline, cached }) {
   const player = useAudioPlayer();
   const isNowPlaying = useIsNowPlaying(sound.id);
 
@@ -46,7 +46,3 @@ export const SoundItem: FC<Props> = memo(({ sound, isOnline, cached }) => {
     </div>
   );
 });
-
-if (process.env.NODE_ENV === "development") {
-  SoundItem.displayName = "SoundItem";
-}

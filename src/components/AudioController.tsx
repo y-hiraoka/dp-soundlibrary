@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { FC, useCallback } from "react";
 import {
   MdOutlineSkipNext,
@@ -19,9 +18,8 @@ import {
 import { FavoriteButton } from "./FavoriteButton";
 import { IconButton } from "./IconButton";
 import { NavigationDrawerButton } from "./NavigationDrawer";
+import { ShareButton } from "./ShareButton";
 import { VolumeSlider } from "./VolumeSlider";
-
-const ShareButton = dynamic(() => import("./ShareButton"), { ssr: false });
 
 export const AudioController: FC = () => {
   const nowPlaying = useNowPlayingSound();

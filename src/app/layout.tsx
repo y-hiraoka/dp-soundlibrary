@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
-import { FC, ReactNode, Suspense } from "react";
+import { FC, ReactNode } from "react";
 import "./global.css";
 import { AudioController } from "../components/AudioController";
 import { BackgroundGradient } from "../components/BackgroundGradient";
 import { Navigation } from "../components/Navigation";
-import { AnalyticsScript } from "../lib/analytics";
+import { GoogleAnalytics } from "../lib/analytics";
 import { Providers } from "./providers";
 
 const inter = Inter({
@@ -25,9 +25,9 @@ const notosansjp = Noto_Sans_JP({
 const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <html lang="ja" className={`${inter.variable} ${notosansjp.variable}`}>
-      <Suspense>
-        <AnalyticsScript />
-      </Suspense>
+      {process.env.NODE_ENV === "production" && (
+        <GoogleAnalytics trackingId="G-6B3JF8MB9J" />
+      )}
       <body className="bg-black font-sans text-black">
         <Providers>
           <BackgroundGradient />
