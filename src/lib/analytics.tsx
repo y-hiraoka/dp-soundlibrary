@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
-import { useEffect, FC, Suspense } from "react";
+import { FC, Suspense, useEffect, useId } from "react";
 
 export const GoogleAnalytics: FC<{ trackingId: string }> = ({ trackingId }) => {
   return (
@@ -13,38 +13,38 @@ export const GoogleAnalytics: FC<{ trackingId: string }> = ({ trackingId }) => {
 };
 
 const GoogleAnalyticsInner: FC<{ trackingId: string }> = ({ trackingId }) => {
+  const scriptId = useId();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const search = searchParams.toString();
-    const url = search ? `${pathname}?${search}` : pathname;
+    const path = pathname ?? "";
+    const qs = searchParams?.toString();
 
-    window.gtag("config", trackingId, {
-      page_path: url,
-    });
+    const url = qs ? `${path}?${qs}` : path;
+
+    pageview(trackingId, url);
   }, [pathname, searchParams, trackingId]);
 
   return (
     <>
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
-      />
-      <Script
-        id="gtag-init"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${trackingId}', {
-              page_path: window.location.pathname,
-            });
-          `,
-        }}
-      />
+      <Script src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`} />
+      <Script id={scriptId + "google-analytics"}>
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', '${trackingId}');
+        `}
+      </Script>
     </>
   );
+};
+
+// https://developers.google.com/analytics/devguides/collection/gtagjs/pages
+const pageview = (trackingId: string, url: string) => {
+  window.gtag("config", trackingId, {
+    page_path: url,
+  });
 };
