@@ -1,6 +1,6 @@
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { atomFamily } from "jotai-family";
-import { MutableRefObject, useCallback, useMemo } from "react";
+import { RefObject, useCallback, useMemo } from "react";
 import { dp_sounds } from "../data/dp";
 import { SoundData } from "../data/sound-type";
 
@@ -18,11 +18,11 @@ const audioStateAtom = atom<AudioState>({
   nowPlaying: undefined,
 });
 
-const contextRef: MutableRefObject<AudioContext | undefined> = { current: undefined };
-const sourceNodeRef: MutableRefObject<AudioBufferSourceNode | undefined> = {
+const contextRef: RefObject<AudioContext | undefined> = { current: undefined };
+const sourceNodeRef: RefObject<AudioBufferSourceNode | undefined> = {
   current: undefined,
 };
-const gainNodeRef: MutableRefObject<GainNode | undefined> = { current: undefined };
+const gainNodeRef: RefObject<GainNode | undefined> = { current: undefined };
 
 const startAudioAtom = atom(null, (get, set, soundData: SoundData) => {
   const audioState = get(audioStateAtom);
