@@ -6,7 +6,6 @@ import { AudioController } from "../components/AudioController";
 import { BackgroundGradient } from "../components/BackgroundGradient";
 import { Navigation } from "../components/Navigation";
 import { GoogleAnalytics } from "../lib/analytics";
-import { Providers } from "./providers";
 
 const inter = Inter({
   display: "swap",
@@ -29,20 +28,18 @@ const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
         <GoogleAnalytics trackingId="G-6B3JF8MB9J" />
       )}
       <body className="bg-black font-sans text-black">
-        <Providers>
-          <BackgroundGradient />
-          <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 grid-rows-[1fr_auto] gap-4 p-3 md:grid-cols-[auto_1fr] md:px-6">
-            <div className="hidden md:block">
-              <div className="sticky top-3">
-                <Navigation />
-              </div>
-            </div>
-            <div className="min-w-0">{children}</div>
-            <div className="sticky bottom-3 col-span-full">
-              <AudioController />
+        <BackgroundGradient />
+        <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 grid-rows-[1fr_auto] gap-4 p-3 md:grid-cols-[auto_1fr] md:px-6">
+          <div className="hidden md:block">
+            <div className="sticky top-3">
+              <Navigation />
             </div>
           </div>
-        </Providers>
+          <div className="min-w-0">{children}</div>
+          <div className="sticky bottom-3 col-span-full">
+            <AudioController />
+          </div>
+        </div>
       </body>
     </html>
   );

@@ -1,45 +1,45 @@
-import { atomFamily, selectorFamily, useRecoilCallback, useRecoilValue } from "recoil";
+import { atom, useAtomValue, useSetAtom } from "jotai";
+import { atomFamily } from "jotai-family";
 import { soundsVersionMap } from "../data/all";
 import { SoundData, SoundVersion } from "../data/sound-type";
 
-const activeCategoriesAtom = atomFamily<string[], SoundVersion>({
-  key: "activeCategoriesAtom",
-  default: [],
-});
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const activeCategoriesAtomFamily = atomFamily((_version: SoundVersion) =>
+  atom<string[]>([]),
+);
+
+const filteredSoundsAtomFamily = atomFamily((version: SoundVersion) =>
+  atom((get) => {
+    const activeCategories = get(activeCategoriesAtomFamily(version));
+    const sounds = soundsVersionMap[version];
+
+    if (activeCategories.length === 0) {
+      return sounds;
+    } else {
+      return sounds.filter((sound) => activeCategories.includes(sound.category));
+    }
+  }),
+);
+
+const toggleActiveCategoryAtomFamily = atomFamily((version: SoundVersion) =>
+  atom(null, (get, set, category: string) => {
+    set(activeCategoriesAtomFamily(version), (prevState) => {
+      if (prevState.includes(category)) {
+        return prevState.filter((c) => c !== category);
+      } else {
+        return prevState.concat(category);
+      }
+    });
+  }),
+);
+
 export const useActiveCategories = (version: SoundVersion): string[] =>
-  useRecoilValue(activeCategoriesAtom(version));
+  useAtomValue(activeCategoriesAtomFamily(version));
+
 export const useToggleActiveCategory = (
   version: SoundVersion,
 ): ((category: string) => void) =>
-  useRecoilCallback(
-    ({ set }) =>
-      (category: string) => {
-        set(activeCategoriesAtom(version), (prevState) => {
-          if (prevState.includes(category)) {
-            return prevState.filter((c) => c !== category);
-          } else {
-            return prevState.concat(category);
-          }
-        });
-      },
-    [version],
-  );
-
-const filteredSoundsSelector = selectorFamily({
-  key: "filteredSoundsSelector",
-  get:
-    (version: SoundVersion) =>
-    ({ get }) => {
-      const activeCategories = get(activeCategoriesAtom(version));
-      const sounds = soundsVersionMap[version];
-
-      if (activeCategories.length === 0) {
-        return sounds;
-      } else {
-        return sounds.filter((sound) => activeCategories.includes(sound.category));
-      }
-    },
-});
+  useSetAtom(toggleActiveCategoryAtomFamily(version));
 
 export const useFilteredSounds = (version: SoundVersion): readonly SoundData[] =>
-  useRecoilValue(filteredSoundsSelector(version));
+  useAtomValue(filteredSoundsAtomFamily(version));

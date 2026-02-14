@@ -1,12 +1,6 @@
+import { atom, useAtomValue, useSetAtom } from "jotai";
+import { atomFamily } from "jotai-family";
 import { MutableRefObject, useCallback, useMemo } from "react";
-import {
-  atom,
-  selector,
-  selectorFamily,
-  useRecoilCallback,
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
 import { dp_sounds } from "../data/dp";
 import { SoundData } from "../data/sound-type";
 
@@ -18,13 +12,10 @@ type AudioState = {
 };
 
 const audioStateAtom = atom<AudioState>({
-  key: "audioStateAtom",
-  default: {
-    volume: 0.5,
-    isPlaying: false,
-    isPaused: false,
-    nowPlaying: undefined,
-  },
+  volume: 0.5,
+  isPlaying: false,
+  isPaused: false,
+  nowPlaying: undefined,
 });
 
 const contextRef: MutableRefObject<AudioContext | undefined> = { current: undefined };
@@ -33,65 +24,71 @@ const sourceNodeRef: MutableRefObject<AudioBufferSourceNode | undefined> = {
 };
 const gainNodeRef: MutableRefObject<GainNode | undefined> = { current: undefined };
 
-export const useAudioState = () => useRecoilValue(audioStateAtom);
+const startAudioAtom = atom(null, (get, set, soundData: SoundData) => {
+  const audioState = get(audioStateAtom);
+
+  if (!contextRef.current) {
+    const _context = new AudioContext();
+    _context.addEventListener("statechange", () => {
+      set(audioStateAtom, (prev) => ({
+        ...prev,
+        isPaused: _context.state === "suspended",
+      }));
+    });
+    contextRef.current = _context;
+  }
+
+  const context = contextRef.current;
+
+  const sourceNode = context.createBufferSource();
+  const gainNode = context.createGain();
+
+  fetch(soundData.file)
+    .then((r) => r.arrayBuffer())
+    .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
+    .then((audioBuffer) => {
+      sourceNode.buffer = audioBuffer;
+      sourceNode.loop = true;
+      if (soundData.loopStart !== undefined) {
+        sourceNode.loopStart = soundData.loopStart;
+      }
+      if (soundData.loopEnd !== undefined) {
+        sourceNode.loopEnd = soundData.loopEnd;
+      }
+      sourceNode.connect(gainNode);
+
+      gainNode.gain.value = audioState.volume;
+      gainNode.connect(context.destination);
+
+      sourceNodeRef.current?.stop();
+      sourceNode.start();
+      if (context.state === "suspended") {
+        context.resume();
+      }
+      sourceNodeRef.current = sourceNode;
+      gainNodeRef.current = gainNode;
+
+      set(audioStateAtom, (prev) => ({
+        ...prev,
+        isPlaying: true,
+        nowPlaying: soundData,
+      }));
+    });
+});
+
+const setVolumeAtom = atom(null, (get, set, volume: number) => {
+  volume = volume < 0 ? 0 : 1 < volume ? 1 : volume;
+
+  if (gainNodeRef.current) {
+    gainNodeRef.current.gain.value = volume;
+  }
+  set(audioStateAtom, (prev) => ({ ...prev, volume }));
+});
+
+export const useAudioState = () => useAtomValue(audioStateAtom);
 export const useAudioPlayer = () => {
-  const setAudioState = useSetRecoilState(audioStateAtom);
-
-  const start = useRecoilCallback(
-    ({ snapshot }) =>
-      (soundData: SoundData) => {
-        const audioState = snapshot.getLoadable(audioStateAtom).getValue();
-
-        if (!contextRef.current) {
-          const _context = new AudioContext();
-          _context.addEventListener("statechange", () => {
-            setAudioState((prev) => ({
-              ...prev,
-              isPaused: _context.state === "suspended",
-            }));
-          });
-          contextRef.current = _context;
-        }
-
-        const context = contextRef.current;
-
-        const sourceNode = context.createBufferSource();
-        const gainNode = context.createGain();
-
-        fetch(soundData.file)
-          .then((r) => r.arrayBuffer())
-          .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
-          .then((audioBuffer) => {
-            sourceNode.buffer = audioBuffer;
-            sourceNode.loop = true;
-            if (soundData.loopStart !== undefined) {
-              sourceNode.loopStart = soundData.loopStart;
-            }
-            if (soundData.loopEnd !== undefined) {
-              sourceNode.loopEnd = soundData.loopEnd;
-            }
-            sourceNode.connect(gainNode);
-
-            gainNode.gain.value = audioState.volume;
-            gainNode.connect(context.destination);
-
-            sourceNodeRef.current?.stop();
-            sourceNode.start();
-            if (context.state === "suspended") {
-              context.resume();
-            }
-            sourceNodeRef.current = sourceNode;
-            gainNodeRef.current = gainNode;
-
-            setAudioState((prev) => ({
-              ...prev,
-              isPlaying: true,
-              nowPlaying: soundData,
-            }));
-          });
-      },
-    [setAudioState],
-  );
+  const start = useSetAtom(startAudioAtom);
+  const setVolume = useSetAtom(setVolumeAtom);
 
   const resume = useCallback(async () => {
     if (!contextRef.current) {
@@ -115,66 +112,42 @@ export const useAudioPlayer = () => {
     await contextRef.current.suspend();
   }, []);
 
-  const setVolume = useCallback(
-    (volume: number) => {
-      volume = volume < 0 ? 0 : 1 < volume ? 1 : volume;
-
-      if (gainNodeRef.current) {
-        gainNodeRef.current.gain.value = volume;
-      }
-      setAudioState((prev) => ({ ...prev, volume }));
-    },
-    [setAudioState],
-  );
-
   return useMemo(
     () => ({ start, resume, pause, setVolume }),
     [pause, resume, setVolume, start],
   );
 };
 
-const nowPlayingSoundSelector = selector({
-  key: "nowPlayingSoundSelector",
-  get: ({ get }) => get(audioStateAtom).nowPlaying,
+const nowPlayingSoundAtom = atom((get) => get(audioStateAtom).nowPlaying);
+
+const nextSoundAtom = atom<SoundData>((get) => {
+  const nowPlaying = get(nowPlayingSoundAtom);
+
+  if (nowPlaying === undefined) return dp_sounds[0];
+
+  const currentIndex = dp_sounds.findIndex((s) => s.id === nowPlaying.id);
+  return dp_sounds[(currentIndex + 1) % dp_sounds.length];
 });
 
-const nextSoundSelector = selector<SoundData>({
-  key: "nextSoundSelector",
-  get: ({ get }) => {
-    const nowPlaying = get(nowPlayingSoundSelector);
+const prevSoundAtom = atom<SoundData>((get) => {
+  const nowPlaying = get(nowPlayingSoundAtom);
 
-    if (nowPlaying === undefined) return dp_sounds[0];
+  if (nowPlaying === undefined) return dp_sounds[dp_sounds.length - 1];
 
-    const currentIndex = dp_sounds.findIndex((s) => s.id === nowPlaying.id);
-    return dp_sounds[(currentIndex + 1) % dp_sounds.length];
-  },
+  const currentIndex = dp_sounds.findIndex((s) => s === nowPlaying);
+  return dp_sounds[currentIndex - 1 < 0 ? dp_sounds.length - 1 : currentIndex - 1];
 });
 
-const prevSoundSelector = selector<SoundData>({
-  key: "prevSoundSelector",
-  get: ({ get }) => {
-    const nowPlaying = get(nowPlayingSoundSelector);
+export const useNowPlayingSound = () => useAtomValue(nowPlayingSoundAtom);
+export const useNextSound = () => useAtomValue(nextSoundAtom);
+export const usePrevSound = () => useAtomValue(prevSoundAtom);
 
-    if (nowPlaying === undefined) return dp_sounds[dp_sounds.length - 1];
-
-    const currentIndex = dp_sounds.findIndex((s) => s === nowPlaying);
-    return dp_sounds[currentIndex - 1 < 0 ? dp_sounds.length - 1 : currentIndex - 1];
-  },
-});
-
-export const useNowPlayingSound = () => useRecoilValue(nowPlayingSoundSelector);
-export const useNextSound = () => useRecoilValue(nextSoundSelector);
-export const usePrevSound = () => useRecoilValue(prevSoundSelector);
-
-const isNowPlayingSelectorFamily = selectorFamily({
-  key: "isPlayingSelectorFamily",
-  get:
-    (soundId: string) =>
-    ({ get }) => {
-      const current = get(nowPlayingSoundSelector);
-      return current?.id === soundId;
-    },
-});
+const isNowPlayingAtomFamily = atomFamily((soundId: string) =>
+  atom((get) => {
+    const current = get(nowPlayingSoundAtom);
+    return current?.id === soundId;
+  }),
+);
 
 export const useIsNowPlaying = (soundId: string) =>
-  useRecoilValue(isNowPlayingSelectorFamily(soundId));
+  useAtomValue(isNowPlayingAtomFamily(soundId));

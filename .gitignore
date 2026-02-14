@@ -40,3 +40,5 @@ yarn-error.log*
 /public/sounds/**/*.wav
 
 .wrangler
+
+.claude/settings.local.json

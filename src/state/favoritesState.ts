@@ -1,76 +1,41 @@
-import { useEffect, useMemo, FC } from "react";
-import { useUpdateEffect } from "react-use";
-import {
-  atom,
-  selectorFamily,
-  useRecoilCallback,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
+import { atom, useAtomValue, useSetAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+import { atomFamily } from "jotai-family";
+import { useMemo } from "react";
 import { allSounds } from "../data/all";
 import { SoundData } from "../data/sound-type";
 
 const STORAGE_KEY = "__dp-soundlibrary-favorites-key";
 
-const isStringArray = (value: unknown): value is string[] => {
-  return Array.isArray(value) && value.every((item) => typeof item === "string");
-};
+const favoritesAtom = atomWithStorage<string[]>(STORAGE_KEY, []);
 
-const favoritesAtom = atom<string[]>({
-  key: "favoritesAtom",
-  default: [],
+const isFavoriteSoundAtomFamily = atomFamily((soundId: string) =>
+  atom((get) => {
+    const favorites = get(favoritesAtom);
+    return favorites.includes(soundId);
+  }),
+);
+
+const toggleFavoriteAtom = atom(null, (get, set, soundId: string) => {
+  set(favoritesAtom, (prevState) => {
+    if (prevState.includes(soundId)) {
+      return prevState.filter((fav) => fav !== soundId);
+    } else {
+      return prevState.concat(soundId);
+    }
+  });
 });
 
 export const useToggleFavorite = (): ((soundId: string) => void) => {
-  return useRecoilCallback(
-    ({ set }) =>
-      (soundId: string) => {
-        set(favoritesAtom, (prevState) => {
-          if (prevState.includes(soundId)) {
-            return prevState.filter((fav) => fav !== soundId);
-          } else {
-            return prevState.concat(soundId);
-          }
-        });
-      },
-    [],
-  );
+  return useSetAtom(toggleFavoriteAtom);
 };
-
-const isFavoriteSoundSelectorFamily = selectorFamily({
-  key: "isFavoriteSoundSelectorFamily",
-  get:
-    (soundId: string) =>
-    ({ get }) => {
-      const favorites = get(favoritesAtom);
-      return favorites.includes(soundId);
-    },
-});
 
 export const useIsFavoriteSound = (soundId: string): boolean => {
-  return useRecoilValue(isFavoriteSoundSelectorFamily(soundId));
-};
-
-export const FavoritesEffect: FC = () => {
-  const [favorites, setFavorites] = useRecoilState(favoritesAtom);
-
-  useEffect(() => {
-    const storageValue = window.localStorage.getItem(STORAGE_KEY);
-    const parsed = JSON.parse(storageValue ?? "[]");
-    if (isStringArray(parsed)) {
-      setFavorites(parsed);
-    }
-  }, [setFavorites]);
-
-  useUpdateEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
-  }, [favorites]);
-
-  return null;
+  return useAtomValue(isFavoriteSoundAtomFamily(soundId));
 };
 
 export const useFavoriteSounds = (): SoundData[] => {
-  const favorites = useRecoilValue(favoritesAtom);
+  const favorites = useAtomValue(favoritesAtom);
   return useMemo(
     () =>
       favorites

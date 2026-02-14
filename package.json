@@ -14,12 +14,13 @@
     "@radix-ui/react-slider": "^1.1.2",
     "@types/gtag.js": "^0.0.12",
     "classnames": "^2.3.2",
+    "jotai": "^2.17.1",
+    "jotai-family": "^1.0.1",
     "next": "^14.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
-    "react-use": "^17.4.0",
-    "recoil": "^0.7.7"
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.5",
@@ -38,5 +39,6 @@
     "tailwindcss": "^3.3.5",
     "typescript": "^5.2.2",
     "wrangler": "^3.21.0"
-  }
+  },
+  "packageManager": "pnpm@10.29.3+sha512.498e1fb4cca5aa06c1dcf2611e6fafc50972ffe7189998c409e90de74566444298ffe43e6cd2acdc775ba1aa7cc5e092a8b7054c811ba8c5770f84693d33d2dc"
 }

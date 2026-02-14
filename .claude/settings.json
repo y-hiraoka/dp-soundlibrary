@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:jotai.org)",
+      "WebFetch(domain:github.com)",
+      "Bash(pnpm build:*)"
+    ]
+  }
+}
