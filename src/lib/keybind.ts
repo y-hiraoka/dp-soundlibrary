@@ -18,7 +18,7 @@ export function useKeybind({
   key,
   onKeyDown,
   targetRef,
-}: KeybindProps) {
+}: KeybindProps): void {
   const handleKeyDown = useEffectEvent((event: KeyboardEvent) => {
     if (altKey && !event.altKey) return;
     if (ctrlKey && !event.ctrlKey) return;

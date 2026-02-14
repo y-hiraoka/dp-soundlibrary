@@ -85,8 +85,13 @@ const setVolumeAtom = atom(null, (get, set, volume: number) => {
   set(audioStateAtom, (prev) => ({ ...prev, volume }));
 });
 
-export const useAudioState = () => useAtomValue(audioStateAtom);
-export const useAudioPlayer = () => {
+export const useAudioState = (): AudioState => useAtomValue(audioStateAtom);
+export const useAudioPlayer = (): {
+  start: (soundData: SoundData) => void;
+  resume: () => Promise<void>;
+  pause: () => Promise<void>;
+  setVolume: (volume: number) => void;
+} => {
   const start = useSetAtom(startAudioAtom);
   const setVolume = useSetAtom(setVolumeAtom);
 
@@ -138,9 +143,10 @@ const prevSoundAtom = atom<SoundData>((get) => {
   return dp_sounds[currentIndex - 1 < 0 ? dp_sounds.length - 1 : currentIndex - 1];
 });
 
-export const useNowPlayingSound = () => useAtomValue(nowPlayingSoundAtom);
-export const useNextSound = () => useAtomValue(nextSoundAtom);
-export const usePrevSound = () => useAtomValue(prevSoundAtom);
+export const useNowPlayingSound = (): SoundData | undefined =>
+  useAtomValue(nowPlayingSoundAtom);
+export const useNextSound = (): SoundData => useAtomValue(nextSoundAtom);
+export const usePrevSound = (): SoundData => useAtomValue(prevSoundAtom);
 
 const isNowPlayingAtomFamily = atomFamily((soundId: string) =>
   atom((get) => {
@@ -149,5 +155,5 @@ const isNowPlayingAtomFamily = atomFamily((soundId: string) =>
   }),
 );
 
-export const useIsNowPlaying = (soundId: string) =>
+export const useIsNowPlaying = (soundId: string): boolean =>
   useAtomValue(isNowPlayingAtomFamily(soundId));
