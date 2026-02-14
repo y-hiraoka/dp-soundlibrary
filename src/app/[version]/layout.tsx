@@ -1,13 +1,11 @@
 import { notFound } from "next/navigation";
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { Filtering } from "../../components/Filtering";
 import { isSoundVersion } from "../../data/sound-type";
 
-const Layout: FC<{
-  params: { version: string };
-  children: ReactNode;
-}> = ({ params, children }) => {
-  const upperVersionParam = params.version.toUpperCase();
+const Layout: FC<LayoutProps<"/[version]">> = async ({ params, children }) => {
+  const { version } = await params;
+  const upperVersionParam = version.toUpperCase();
 
   if (!isSoundVersion(upperVersionParam)) {
     notFound();

@@ -28,11 +28,15 @@ export const AudioController: FC = () => {
   const player = useAudioPlayer();
   const audioState = useAudioState();
   const togglePlay = useCallback(() => {
-    audioState.isPlaying
-      ? audioState.isPaused
-        ? player.resume()
-        : player.pause()
-      : player.start(nextSound);
+    if (audioState.isPlaying) {
+      if (audioState.isPaused) {
+        player.resume();
+      } else {
+        player.pause();
+      }
+    } else {
+      player.start(nextSound);
+    }
   }, [audioState.isPaused, audioState.isPlaying, nextSound, player]);
   const playPrevSound = useCallback(() => player.start(prevSound), [player, prevSound]);
   const playNextSound = useCallback(() => player.start(nextSound), [nextSound, player]);

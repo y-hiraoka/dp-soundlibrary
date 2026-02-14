@@ -9,7 +9,7 @@ export const VolumeSlider: FC = () => {
   const audioState = useAudioState();
   const player = useAudioPlayer();
 
-  const previousVolumeRef = useRef<number>();
+  const previousVolumeRef = useRef<number | undefined>(undefined);
 
   const toggleMute = useCallback(() => {
     if (previousVolumeRef.current === undefined) {
@@ -63,8 +63,8 @@ export const VolumeSlider: FC = () => {
         <Slider.Track className="relative h-1 w-full grow rounded-full bg-white">
           <Slider.Range className="absolute h-full rounded-full bg-yellow" />
         </Slider.Track>
-        <Slider.Thumb className="relative block h-4 w-4 rounded-full bg-white shadow-md shadow-black focus:outline focus:outline-4 focus:outline-offset-0 focus:outline-yellow/30">
-          <span className="relative -left-1.5 -top-1.5 block h-7 w-7 rounded-full" />
+        <Slider.Thumb className="relative block size-4 rounded-full bg-white shadow-md shadow-black focus:outline focus:outline-4 focus:outline-offset-0 focus:outline-yellow/30">
+          <span className="relative -left-1.5 -top-1.5 block size-7 rounded-full" />
         </Slider.Thumb>
       </Slider.Root>
     </div>

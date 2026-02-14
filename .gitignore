@@ -35,6 +35,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+next-env.d.ts
 
 # following the guideline of Pokemon GAME Sound Library
 /public/sounds/**/*.wav

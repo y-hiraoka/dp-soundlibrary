@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef } from "react";
+import { RefObject, useEffect, useEffectEvent } from "react";
 
 type KeybindProps = {
   altKey?: boolean;
@@ -19,34 +19,26 @@ export function useKeybind({
   onKeyDown,
   targetRef,
 }: KeybindProps) {
-  const onKeyDownLatest = useLatest(onKeyDown);
+  const handleKeyDown = useEffectEvent((event: KeyboardEvent) => {
+    if (altKey && !event.altKey) return;
+    if (ctrlKey && !event.ctrlKey) return;
+    if (metaKey && !event.metaKey) return;
+    if (shiftKey && !event.shiftKey) return;
+    if (event.key !== key) return;
+
+    event.preventDefault();
+    onKeyDown?.(event);
+  });
 
   useEffect(() => {
-    const eventListener = (event: KeyboardEvent) => {
-      if (altKey && !event.altKey) return;
-      if (ctrlKey && !event.ctrlKey) return;
-      if (metaKey && !event.metaKey) return;
-      if (shiftKey && !event.shiftKey) return;
-      if (event.key !== key) return;
-
-      event.preventDefault();
-      onKeyDownLatest.current?.(event);
-    };
-
     if (targetRef?.current) {
       const target = targetRef.current;
 
-      target.addEventListener("keydown", eventListener);
-      return () => target.removeEventListener("keydown", eventListener);
+      target.addEventListener("keydown", handleKeyDown);
+      return () => target.removeEventListener("keydown", handleKeyDown);
     } else {
-      window.addEventListener("keydown", eventListener);
-      return () => window.removeEventListener("keydown", eventListener);
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
     }
-  }, [altKey, ctrlKey, key, metaKey, onKeyDownLatest, shiftKey, targetRef]);
-}
-
-function useLatest<T>(value: T) {
-  const ref = useRef(value);
-  ref.current = value;
-  return ref;
+  }, [targetRef]);
 }

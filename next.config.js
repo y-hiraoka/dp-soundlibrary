@@ -3,4 +3,4 @@ const config = {
   output: "export",
 };
 
-module.exports = config;
+export default config;

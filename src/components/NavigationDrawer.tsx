@@ -42,7 +42,7 @@ export const NavigationDrawerButton: FC = () => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="h-fit w-fit p-3">
+              <Dialog.Panel className="size-fit p-3">
                 <Dialog.Title as="h3" className="sr-only">
                   メニュー
                 </Dialog.Title>

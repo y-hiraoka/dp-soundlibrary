@@ -46,7 +46,7 @@ const PokeCheckbox: FC<{
       className="flex cursor-pointer select-none items-center space-x-1 rounded-full border border-white/30 px-3 py-2"
     >
       <Checkbox.Root
-        className="flex h-4 w-4 appearance-none items-center justify-center rounded-full data-[state=unchecked]:border data-[state=unchecked]:border-white/30"
+        className="flex size-4 appearance-none items-center justify-center rounded-full data-[state=unchecked]:border data-[state=unchecked]:border-white/30"
         checked={checked}
         onCheckedChange={onCheckedChange}
         id={id}
